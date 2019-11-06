@@ -1,0 +1,9 @@
+{
+    "name": "@dimanoid/ngx-dm-dialog",
+    "version": "0.0.1",
+    "peerDependencies": {
+        "@angular/common": "^8.2.13",
+        "@angular/core": "^8.2.13",
+        "resize-observer-polyfill": "^1.5.1"
+    }
+}
