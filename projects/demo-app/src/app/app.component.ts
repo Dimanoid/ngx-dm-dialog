@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { Point } from './dm-divider.module';
+import { DmDialogService } from '@dimanoid/ngx-dm-dialog';
 
 @Component({
     selector: 'app-root',
@@ -21,7 +22,7 @@ export class AppComponent implements OnInit {
         }
     } = {};
 
-    constructor() {
+    constructor(private _ds: DmDialogService) {
         this.divider['d1'] = { min: 200, max: 700, vertical: true, size: 300 };
     }
 
