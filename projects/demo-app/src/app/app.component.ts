@@ -70,8 +70,7 @@ export class AppComponent implements OnInit {
         }
     }
 
-    showDialog1(e: Event, parent: Element) {
-        _L('showDialog1', e, 'parent:', parent);
+    showDialog1(e: Event, parent?: Element) {
         const cr = this._ds.add(Dialog1Component, parent);
         _L('showDialog1', 'componentRef:', cr);
     }
