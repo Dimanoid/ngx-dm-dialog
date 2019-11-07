@@ -6,10 +6,11 @@
             <div class="dm-panel-left layout" [style.width.px]="divider['d1'].size">
                 <div class="layout flex relative">
                     <div class="layout vertical fit scroll">
-                        <b class="mb1 fs-l">Lib options:</b>
+                        <b class="mb1 fs-l">Dialog options:</b>
                         <div class="layout center">
-                            Option
                         </div>
+                        <button class="mt1" nz-button nzType="primary" (click)="showDialog1($event)">Show dialog attached to &lt;body&gt;</button>
+                        <button class="mt1" nz-button nzType="primary" (click)="showDialog1($event, rightPanel)">Show dialog attached to #rightPanel</button>
                     </div>
                 </div>
                 <div dm-divider class="dm-divider-vert layout center-center" style="width: 12px"
@@ -22,10 +23,9 @@
                 </div>
             </div>
 
-            <div class="layout flex relative">
-                <div class="layout fit scroll">
-
-                    Lib demo
+            <div class="layout flex relative" #rightPanel>
+                <div class="fit scroll">
+                    
 
                 </div>
             </div>

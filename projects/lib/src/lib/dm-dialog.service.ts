@@ -34,12 +34,8 @@ export class DmDialogService {
         if (!element) {
             element = document.body;
         }
-        element.appendChild(this._getComponentRootNode(componentRef));
+        element.appendChild((componentRef.hostView as EmbeddedViewRef<any>).rootNodes[0] as HTMLElement);
         return componentRef;
-    }
-
-    private _getComponentRootNode(componentRef: ComponentRef<any>): HTMLElement {
-        return (componentRef.hostView as EmbeddedViewRef<any>).rootNodes[0] as HTMLElement;
     }
 
 }

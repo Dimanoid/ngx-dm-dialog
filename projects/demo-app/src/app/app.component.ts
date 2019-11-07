@@ -1,6 +1,8 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { Point } from './dm-divider.module';
 import { DmDialogService } from '@dimanoid/ngx-dm-dialog';
+import { _L } from 'projects/lib/src/lib/utils';
+import { Dialog1Component } from './dialog1.component';
 
 @Component({
     selector: 'app-root',
@@ -66,6 +68,12 @@ export class AppComponent implements OnInit {
             }
             this.divider[name].size = size;
         }
+    }
+
+    showDialog1(e: Event, parent: Element) {
+        _L('showDialog1', e, 'parent:', parent);
+        const cr = this._ds.add(Dialog1Component, parent);
+        _L('showDialog1', 'componentRef:', cr);
     }
 
 }
