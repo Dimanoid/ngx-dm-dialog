@@ -6,6 +6,7 @@ import {
     Injector,
     EmbeddedViewRef
 } from '@angular/core';
+import { DmDialogRef } from './dm-dialog-ref';
 
 export type ComponentType<T> = new (...args: any[]) => T;
 
@@ -13,6 +14,7 @@ export type ComponentType<T> = new (...args: any[]) => T;
     providedIn: 'root'
 })
 export class DmDialogService {
+    private _dialogs: { [id: string]: DmDialogRef<any> } = {};
 
     constructor(
         private _appRef: ApplicationRef,
@@ -20,12 +22,19 @@ export class DmDialogService {
         private _injector: Injector
     ) { }
 
-    private _dialogs: ComponentRef<any>[] = [];
 
-    add<T>(component: ComponentType<T> | ComponentRef<T>, element?: Element | string): ComponentRef<T> {
+    add<T>(component: ComponentType<T> | ComponentRef<T>, element?: Element | string): DmDialogRef<T> {
+        const dialogRef = new DmDialogRef<T>();
+        const dialogInjector = Injector.create({
+            providers: [
+                { provide: DmDialogRef, useValue: dialogRef }
+            ],
+            parent: this._injector
+        });
         const componentRef = component instanceof ComponentRef
             ? component
-            : this._resolver.resolveComponentFactory(component).create(this._injector);
+            : this._resolver.resolveComponentFactory(component).create(dialogInjector);
+        dialogRef.componentRef = componentRef;
         this._appRef.attachView(componentRef.hostView);
         if (typeof element === 'string') {
             element = document.querySelector(element);
@@ -34,24 +43,13 @@ export class DmDialogService {
             element = document.body;
         }
         element.appendChild((componentRef.hostView as EmbeddedViewRef<any>).rootNodes[0] as HTMLElement);
-        this._dialogs.push(componentRef);
-        return componentRef;
+        this._dialogs[dialogRef.id] = dialogRef;
+        return dialogRef;
     }
 
-    remove(dialog: number | ComponentRef<any>): boolean {
-        let componentRef;
-        if (typeof dialog === 'number' && this._dialogs.length > dialog)  {
-            componentRef = this._dialogs.splice(dialog, 1)[0];
-        }
-        else {
-            for (const cr of this._dialogs) {
-                if (cr === dialog) {
-                    componentRef = cr;
-                }
-            }
-        }
-        if (componentRef) {
-            this._remove(componentRef);
+    remove(id: string): boolean {
+        if (this._dialogs[id]) {
+            this._remove(this._dialogs[id].componentRef);
             return true;
         }
         return false;
@@ -63,13 +61,10 @@ export class DmDialogService {
     }
 
     clear() {
-        while (this._dialogs.length > 0) {
-            this._remove(this._dialogs.pop());
-        }
-    }
-
-    getIndex(componentRef: ComponentRef<any>): number {
-        return this._dialogs.indexOf(componentRef);
+         Object.keys(this._dialogs).forEach(id => {
+             this._remove(this._dialogs[id].componentRef);
+             delete this._dialogs[id];
+         });
     }
 
 }

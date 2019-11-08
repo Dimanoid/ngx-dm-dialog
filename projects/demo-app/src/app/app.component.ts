@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { Point } from './dm-divider.module';
 import { DmDialogService } from '@dimanoid/ngx-dm-dialog';
-import { _L } from 'projects/lib/src/lib/_utils';
 import { Dialog1Component } from './dialog1.component';
 
 @Component({
@@ -71,10 +70,10 @@ export class AppComponent implements OnInit {
     }
 
     showDialog1(e: Event, parent?: Element | string) {
-        const cr = this._ds.add(Dialog1Component, parent);
-        cr.instance.text = 'parent="' + (typeof parent == 'string' ? parent : (parent ? this._getElementSelector(parent) : '<body>')) + '"';
-        cr.instance.closeDialog.subscribe(() => this._ds.remove(cr));
-        _L('showDialog1', 'componentRef:', cr);
+        const dr = this._ds.add(Dialog1Component, parent);
+        const inst = dr.componentRef.instance;
+        inst.text = 'parent="' + (typeof parent == 'string' ? parent : (parent ? this._getElementSelector(parent) : '<body>')) + '"';
+        inst.closeDialog.subscribe(() => this._ds.remove(dr.id));
     }
 
     clearDialogs() {

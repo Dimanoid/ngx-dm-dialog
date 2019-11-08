@@ -1,4 +1,10 @@
-﻿import { Component, Input, Output, EventEmitter } from '@angular/core';
+﻿import {
+    Component,
+    Input,
+    Output,
+    EventEmitter,
+} from '@angular/core';
+import { DmDialogService, DmDialogRef } from '@dimanoid/ngx-dm-dialog';
 
 @Component({
     template: `
@@ -13,6 +19,9 @@ export class Dialog1Component {
     @Input() text: string;
     @Output() closeDialog: EventEmitter<void> = new EventEmitter();
 
-    constructor() { }
+    constructor(private _ds: DmDialogService, private _dr: DmDialogRef<Dialog1Component>) {
+        console.log('[Dialog1Component] constructor, _ds:', this._ds);
+        console.log('[Dialog1Component] constructor, _dr:', this._dr);
+    }
 
 }
