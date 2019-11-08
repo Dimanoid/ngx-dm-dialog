@@ -14,7 +14,6 @@ export class Point {
     selector: '[dm-divider]'
 })
 export class DmDividerDirective {
-    @Input() enabled: boolean = true;
     @Output() dmDividerDragStart: EventEmitter<Point> = new EventEmitter();
     @Output() dmDividerDragEnd: EventEmitter<Point> = new EventEmitter();
     @Output() dmDividerMove: EventEmitter<Point> = new EventEmitter();
@@ -26,9 +25,6 @@ export class DmDividerDirective {
         this._elem = elemRef.nativeElement;
 
         this._elem.onmousedown = (event: MouseEvent) => {
-            if (!this.enabled) {
-                return;
-            }
             // tslint:disable-next-line: deprecation
             event = event || window.event as MouseEvent;
             event.stopPropagation();

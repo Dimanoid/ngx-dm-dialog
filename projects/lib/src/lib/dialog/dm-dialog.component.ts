@@ -4,7 +4,7 @@ import {
     Input, ElementRef, ChangeDetectorRef, NgZone,
     Output, EventEmitter, OnChanges, SimpleChanges, AfterContentInit
 } from '@angular/core';
-import { InputNumber, InputBoolean } from '../utils';
+import { InputNumber, InputBoolean } from '../_utils';
 
 import { DmDialogService } from '../dm-dialog.service';
 

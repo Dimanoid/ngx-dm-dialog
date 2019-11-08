@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { Point } from './dm-divider.module';
 import { DmDialogService } from '@dimanoid/ngx-dm-dialog';
-import { _L } from 'projects/lib/src/lib/utils';
+import { _L } from 'projects/lib/src/lib/_utils';
 import { Dialog1Component } from './dialog1.component';
 
 @Component({
@@ -70,9 +70,29 @@ export class AppComponent implements OnInit {
         }
     }
 
-    showDialog1(e: Event, parent?: Element) {
+    showDialog1(e: Event, parent?: Element | string) {
         const cr = this._ds.add(Dialog1Component, parent);
+        cr.instance.text = 'parent="' + (typeof parent == 'string' ? parent : (parent ? this._getElementSelector(parent) : '<body>')) + '"';
+        cr.instance.closeDialog.subscribe(() => this._ds.remove(cr));
         _L('showDialog1', 'componentRef:', cr);
+    }
+
+    clearDialogs() {
+        this._ds.clear();
+    }
+
+    private _getElementSelector(el: Element): string {
+        if (!el) {
+            return '<null>';
+        }
+        let s = el.tagName;
+        if (el.id) {
+            s += '#' + el.id;
+        }
+        if (el.className) {
+            s += '.' + el.className.split(' ').join('.');
+        }
+        return s;
     }
 
 }

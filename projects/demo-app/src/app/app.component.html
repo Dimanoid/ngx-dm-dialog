@@ -11,10 +11,11 @@
                         </div>
                         <button class="mt1" nz-button nzType="primary" (click)="showDialog1($event)">Show dialog attached to &lt;body&gt;</button>
                         <button class="mt1" nz-button nzType="primary" (click)="showDialog1($event, rightPanel)">Show dialog attached to #rightPanel</button>
+                        <button class="mt1" nz-button nzType="primary" (click)="showDialog1($event, '#rightPanel')">Show dialog attached to id="rightPanel"</button>
+                        <button class="mt1" nz-button nzType="danger" (click)="clearDialogs()">Remove all dialogs</button>
                     </div>
                 </div>
                 <div dm-divider class="dm-divider-vert layout center-center" style="width: 12px"
-                    enabled="true"
                     [class.dm-divider-moving]="divider['d1'].moving"
                     (dmDividerDragStart)="dividerDragStart('d1', $event)"
                     (dmDividerDragEnd)="dividerDragEnd('d1', $event)"
@@ -23,7 +24,7 @@
                 </div>
             </div>
 
-            <div class="layout flex relative" #rightPanel>
+            <div id="rightPanel" class="layout flex relative" #rightPanel>
                 <div class="fit scroll">
                     
 
