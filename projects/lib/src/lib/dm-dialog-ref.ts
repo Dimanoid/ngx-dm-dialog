@@ -3,6 +3,6 @@ import { ComponentRef } from '@angular/core';
 
 export class DmDialogRef<T> {
     id: number;
-    options: DmDialogConfig;
+    config: DmDialogConfig;
     componentRef: ComponentRef<T>;
 }
