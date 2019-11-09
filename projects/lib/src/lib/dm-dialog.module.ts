@@ -2,10 +2,12 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { DmDialogComponent } from './dialog/dm-dialog.component';
+import { DmTemplateWrapperComponent } from './template-wrapper.component';
 
 @NgModule({
     declarations: [
-        DmDialogComponent
+        DmDialogComponent,
+        DmTemplateWrapperComponent
     ],
     imports: [
         CommonModule

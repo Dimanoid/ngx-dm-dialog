@@ -1,4 +1,5 @@
-export { DmDialogRef } from './lib/dm-dialog-ref';
-export { DmDialogModule } from './lib/dm-dialog.module';
-export { DmDialogService } from './lib/dm-dialog.service';
-export { DmDialogComponent } from './lib/dialog/dm-dialog.component';
+export * from './lib/dm-dialog-ref';
+export * from './lib/dm-dialog-config';
+export * from './lib/dm-dialog.module';
+export * from './lib/dm-dialog.service';
+export * from './lib/dialog/dm-dialog.component';

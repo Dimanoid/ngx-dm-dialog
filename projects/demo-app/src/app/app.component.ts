@@ -70,7 +70,7 @@ export class AppComponent implements OnInit {
     }
 
     showDialog1(e: Event, parent?: Element | string) {
-        const dr = this._ds.add(Dialog1Component, parent);
+        const dr = this._ds.add(Dialog1Component, { hostView: parent });
         const inst = dr.componentRef.instance;
         inst.text = 'parent="' + (typeof parent == 'string' ? parent : (parent ? this._getElementSelector(parent) : '<body>')) + '"';
         inst.closeDialog.subscribe(() => this._ds.remove(dr.id));
