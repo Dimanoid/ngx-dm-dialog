@@ -8,10 +8,11 @@ const CONFIG_FIELDS = [
 
 export class DmDialogConfig {
     backdrop: boolean = true;
-    backdropOpacity: number = .7;
+    backdropOpacity: number = .3;
     draggable: boolean = true;
     resizeable: boolean = false;
     position: 'center' | 'fill' | 'point' = 'center';
+    fillPadding: number = 0;
     origin: Element | Point | Rect;
     minWidth: number;
     maxWidth: number;

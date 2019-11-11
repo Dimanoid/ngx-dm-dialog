@@ -5,12 +5,17 @@ import {
     ComponentRef,
     Injector,
     EmbeddedViewRef,
-    TemplateRef
+    TemplateRef,
+    Renderer2,
+    RendererFactory2,
+    Inject
 } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
 
 import { DmDialogRef } from './dm-dialog-ref';
 import { DmDialogConfig } from './dm-dialog-config';
 import { DmTemplateWrapperComponent } from './template-wrapper.component';
+import { Point, Rect } from './_utils';
 
 export type ComponentType<T> = new (...args: any[]) => T;
 
@@ -21,19 +26,24 @@ export class DmDialogService {
     private _lastId = 1;
     private _dialogs: { [id: string]: DmDialogRef<any> } = {};
     private _globalConfig: DmDialogConfig = new DmDialogConfig();
+    private _renderer: Renderer2;
 
     constructor(
         private _appRef: ApplicationRef,
         private _resolver: ComponentFactoryResolver,
-        private _injector: Injector
-    ) { }
+        private _injector: Injector,
+        private _rendererFactory: RendererFactory2,
+        @Inject(DOCUMENT) private document
+    ) {
+        this._renderer = this._rendererFactory.createRenderer(null, null);
+    }
 
     add<T>(
         dialog: ComponentType<T> | ComponentRef<T> | TemplateRef<T>,
         options?: {
             config?: DmDialogConfig,
             templateContext?: any,
-            hostView?: Element | string
+            hostElement?: Element | string
         }
     ): DmDialogRef<T> {
         if (!options) {
@@ -65,9 +75,9 @@ export class DmDialogService {
         this._appRef.attachView(componentRef.hostView);
 
         let element: Element;
-        element = typeof options.hostView === 'string' ? document.querySelector(options.hostView) : options.hostView;
+        element = typeof options.hostElement === 'string' ? this.document.querySelector(options.hostElement) : options.hostElement;
         if (!element) {
-            element = document.body;
+            element = this.document.body;
         }
         this._showDialog(dialogRef, element);
 
@@ -77,20 +87,22 @@ export class DmDialogService {
 
     remove(id: number): boolean {
         if (this._dialogs[id]) {
-            this._remove(this._dialogs[id].componentRef);
+            this._remove(this._dialogs[id]);
+            delete this._dialogs[id];
             return true;
         }
         return false;
     }
 
-    private _remove(componentRef: ComponentRef<any>) {
-        this._appRef.detachView(componentRef.hostView);
-        componentRef.destroy();
+    private _remove<T>(dialogRef: DmDialogRef<T>) {
+        this._appRef.detachView(dialogRef.componentRef.hostView);
+        dialogRef.componentRef.destroy();
+        this._renderer.removeChild(this._renderer.parentNode(dialogRef.backdropElement), dialogRef.backdropElement);
     }
 
     clear() {
          Object.keys(this._dialogs).forEach(id => {
-             this._remove(this._dialogs[id].componentRef);
+             this._remove(this._dialogs[id]);
              delete this._dialogs[id];
          });
     }
@@ -108,10 +120,104 @@ export class DmDialogService {
     }
 
     private _showDialog<T>(dialogRef: DmDialogRef<T>, element: Element): void {
-        if (dialogRef.config.animOpen) {
-            this._animateDialogOpening(dialogRef.config.animOpenDuration);
+        if (dialogRef.config.backdrop) {
+            const wrapper = this._renderer.createElement('div');
+            this._renderer.setStyle(wrapper, 'position', 'absolute');
+            this._renderer.setStyle(wrapper, 'top', 0);
+            this._renderer.setStyle(wrapper, 'right', 0);
+            this._renderer.setStyle(wrapper, 'bottom', 0);
+            this._renderer.setStyle(wrapper, 'left', 0);
+            this._renderer.setStyle(wrapper, 'opacity', dialogRef.config.backdropOpacity);
+            this._renderer.addClass(wrapper, 'ngx-dm-dialog-backdrop');
+            this._renderer.appendChild(element, wrapper);
+            dialogRef.backdropElement = wrapper;
         }
-        element.appendChild(this._getHostElement(dialogRef.componentRef));
+
+        const hostView = this._getHostElement(dialogRef.componentRef);
+        const cfg = dialogRef.config;
+
+        let start: Rect;
+        if (cfg.origin) {
+            if (cfg.origin instanceof Rect) {
+                start = new Rect(cfg.origin.x, cfg.origin.y, cfg.origin.w, cfg.origin.h);
+            }
+            else if (cfg.origin instanceof Point) {
+                start = new Rect(cfg.origin.x, cfg.origin.y, 1, 1);
+            }
+            else if (cfg.origin instanceof Element) {
+                const or = cfg.origin.getBoundingClientRect();
+                start = new Rect(or.left, or.top, or.width, or.height);
+            }
+        }
+        if (!start && cfg.position == 'point') {
+            cfg.position = 'center';
+        }
+
+        const r = element.getBoundingClientRect();
+        const hr = new Rect(r.left, r.top, r.width, r.height);
+        this._renderer.setStyle(hostView, 'position', 'absolute');
+
+        let end: Rect;
+        if (cfg.position == 'fill') {
+            this._renderer.setStyle(hostView, 'top', `${cfg.fillPadding}px`);
+            this._renderer.setStyle(hostView, 'right', `${cfg.fillPadding}px`);
+            this._renderer.setStyle(hostView, 'bottom', `${cfg.fillPadding}px`);
+            this._renderer.setStyle(hostView, 'left', `${cfg.fillPadding}px`);
+            end = new Rect(r.left + cfg.fillPadding, r.top + cfg.fillPadding, r.width - cfg.fillPadding, r.height - cfg.fillPadding);
+        }
+        else if (cfg.position == 'point') {
+            this._renderer.setStyle(hostView, 'left', `${start.x}px`);
+            this._renderer.setStyle(hostView, 'top', `${start.y}px`);
+            if (cfg.minWidth) {
+                this._renderer.setStyle(hostView, 'min-width', `${cfg.minWidth}px`);
+            }
+            if (cfg.maxWidth) {
+                this._renderer.setStyle(hostView, 'max-width', `${cfg.maxWidth}px`);
+            }
+            if (cfg.minHeight) {
+                this._renderer.setStyle(hostView, 'min-height', `${cfg.minHeight}px`);
+            }
+            if (cfg.maxHeight) {
+                this._renderer.setStyle(hostView, 'max-height', `${cfg.maxHeight}px`);
+            }
+            end = new Rect(
+                start.x,
+                start.y,
+                start.x + (cfg.minWidth || cfg.maxWidth || 10),
+                start.y + (cfg.minHeight || cfg.maxHeight || 10)
+            );
+        }
+        else {
+            const dx = Math.round((hr.w - (cfg.minWidth || cfg.maxWidth || 10)) / 2);
+            const dy = Math.round((hr.h - (cfg.minHeight || cfg.maxHeight || 10)) / 2);
+            this._renderer.setStyle(hostView, 'left', `${dx}px`);
+            this._renderer.setStyle(hostView, 'top', `${dy}px`);
+            if (cfg.minWidth) {
+                this._renderer.setStyle(hostView, 'min-width', `${cfg.minWidth}px`);
+            }
+            if (cfg.maxWidth) {
+                this._renderer.setStyle(hostView, 'max-width', `${cfg.maxWidth}px`);
+            }
+            if (cfg.minHeight) {
+                this._renderer.setStyle(hostView, 'min-height', `${cfg.minHeight}px`);
+            }
+            if (cfg.maxHeight) {
+                this._renderer.setStyle(hostView, 'max-height', `${cfg.maxHeight}px`);
+            }
+            end = new Rect(
+                dx,
+                dy,
+                dx + (cfg.minWidth || cfg.maxWidth || 10),
+                dy + (cfg.minHeight || cfg.maxHeight || 10)
+            );
+        }
+        this._renderer.setStyle(hostView, 'transition', 'transform .3s cubic-bezier(.19, 1, .22, 1)');
+        this._renderer.setStyle(hostView, 'transform', 'scale(.001)');
+        if (cfg.animOpen) {
+            this._animateDialogOpening(cfg.animOpenDuration);
+        }
+        this._renderer.appendChild(element, hostView);
+        setTimeout(() => this._renderer.setStyle(hostView, 'transform', 'scale(1)'));
     }
 
     private _animateDialogOpening(duration: number): void {
