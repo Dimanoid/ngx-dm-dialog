@@ -69,9 +69,21 @@ export class AppComponent implements OnInit {
         }
     }
 
-    showDialog1(e: Event, parent?: Element | string) {
-        const dr = this._ds.add(Dialog1Component, { hostElement: parent });
+    showDialog1(e: MouseEvent, parent?: Element | string) {
+        const dr = this._ds.add(Dialog1Component, {
+            hostElement: parent,
+            config: {
+                origin: e.target as HTMLElement,
+                position: 'center',
+                fillPadding: 20,
+                minHeight: Math.round(Math.random() * 600 + 200),
+                minWidth: Math.round(Math.random() * 1200 + 300),
+                hostClass: 'layout'
+            }
+        });
+        console.log('showDialog1 e:', e);
         const inst = dr.componentRef.instance;
+        inst.fill = false;
         inst.text = 'parent="' + (typeof parent == 'string' ? parent : (parent ? this._getElementSelector(parent) : '<body>')) + '"';
         inst.closeDialog.subscribe(() => this._ds.remove(dr.id));
     }

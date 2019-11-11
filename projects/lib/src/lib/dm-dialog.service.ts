@@ -13,7 +13,7 @@ import {
 import { DOCUMENT } from '@angular/common';
 
 import { DmDialogRef } from './dm-dialog-ref';
-import { DmDialogConfig } from './dm-dialog-config';
+import { DmDialogConfig, IDmDialogConfig } from './dm-dialog-config';
 import { DmTemplateWrapperComponent } from './template-wrapper.component';
 import { Point, Rect } from './_utils';
 
@@ -41,7 +41,7 @@ export class DmDialogService {
     add<T>(
         dialog: ComponentType<T> | ComponentRef<T> | TemplateRef<T>,
         options?: {
-            config?: DmDialogConfig,
+            config?: IDmDialogConfig,
             templateContext?: any,
             hostElement?: Element | string
         }
@@ -135,6 +135,9 @@ export class DmDialogService {
 
         const hostView = this._getHostElement(dialogRef.componentRef);
         const cfg = dialogRef.config;
+        if (cfg.hostClass) {
+            this._renderer.addClass(hostView, cfg.hostClass);
+        }
 
         let start: Rect;
         if (cfg.origin) {
@@ -149,21 +152,24 @@ export class DmDialogService {
                 start = new Rect(or.left, or.top, or.width, or.height);
             }
         }
-        if (!start && cfg.position == 'point') {
-            cfg.position = 'center';
-        }
 
         const r = element.getBoundingClientRect();
         const hr = new Rect(r.left, r.top, r.width, r.height);
+        const hw2 = Math.round(hr.w / 2);
+        const hh2 = Math.round(hr.h / 2);
         this._renderer.setStyle(hostView, 'position', 'absolute');
+        if (!start) {
+            cfg.position = 'center';
+            start = new Rect(hw2 - 1, hh2 - 1, 2, 2);
+        }
 
         let end: Rect;
         if (cfg.position == 'fill') {
+            this._renderer.setStyle(hostView, 'left', `${cfg.fillPadding}px`);
             this._renderer.setStyle(hostView, 'top', `${cfg.fillPadding}px`);
             this._renderer.setStyle(hostView, 'right', `${cfg.fillPadding}px`);
             this._renderer.setStyle(hostView, 'bottom', `${cfg.fillPadding}px`);
-            this._renderer.setStyle(hostView, 'left', `${cfg.fillPadding}px`);
-            end = new Rect(r.left + cfg.fillPadding, r.top + cfg.fillPadding, r.width - cfg.fillPadding, r.height - cfg.fillPadding);
+            end = new Rect(cfg.fillPadding, cfg.fillPadding, r.width - cfg.fillPadding * 2, r.height - cfg.fillPadding * 2);
         }
         else if (cfg.position == 'point') {
             this._renderer.setStyle(hostView, 'left', `${start.x}px`);
@@ -188,10 +194,6 @@ export class DmDialogService {
             );
         }
         else {
-            const dx = Math.round((hr.w - (cfg.minWidth || cfg.maxWidth || 10)) / 2);
-            const dy = Math.round((hr.h - (cfg.minHeight || cfg.maxHeight || 10)) / 2);
-            this._renderer.setStyle(hostView, 'left', `${dx}px`);
-            this._renderer.setStyle(hostView, 'top', `${dy}px`);
             if (cfg.minWidth) {
                 this._renderer.setStyle(hostView, 'min-width', `${cfg.minWidth}px`);
             }
@@ -204,20 +206,17 @@ export class DmDialogService {
             if (cfg.maxHeight) {
                 this._renderer.setStyle(hostView, 'max-height', `${cfg.maxHeight}px`);
             }
-            end = new Rect(
-                dx,
-                dy,
-                dx + (cfg.minWidth || cfg.maxWidth || 10),
-                dy + (cfg.minHeight || cfg.maxHeight || 10)
-            );
         }
-        this._renderer.setStyle(hostView, 'transition', 'transform .3s cubic-bezier(.19, 1, .22, 1)');
-        this._renderer.setStyle(hostView, 'transform', 'scale(.001)');
-        if (cfg.animOpen) {
-            this._animateDialogOpening(cfg.animOpenDuration);
-        }
+        this._renderer.setStyle(hostView, 'opacity', 0);
         this._renderer.appendChild(element, hostView);
-        setTimeout(() => this._renderer.setStyle(hostView, 'transform', 'scale(1)'));
+        if (cfg.position == 'center') {
+            setTimeout(() => { // TODO: find out how to correctly detect when view is fully rendered
+                const dbb = hostView.getBoundingClientRect();
+                this._renderer.setStyle(hostView, 'left', Math.round((hr.w - dbb.width) / 2) + 'px');
+                this._renderer.setStyle(hostView, 'top', Math.round((hr.h - dbb.height) / 2) + 'px');
+                this._renderer.setStyle(hostView, 'opacity', 1);
+            });
+        }
     }
 
     private _animateDialogOpening(duration: number): void {
