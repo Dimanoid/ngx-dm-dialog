@@ -5,12 +5,18 @@
             width: 300px;
             padding: 10px 0 10px 10px;
             background-color: #f8f8f8;
-            margin-right: 10px;
+            margin-right: 3px;
             & > div {
                 margin-bottom: 10px;
             }
             .dm-data {
                 color: steelblue;
+            }
+            .dm-panel-left-options > * {
+                margin-bottom: .5rem;
+                & > span {
+                    margin-right: .5rem;
+                }
             }
         }
     }

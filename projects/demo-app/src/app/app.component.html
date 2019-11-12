@@ -5,14 +5,79 @@
         <div class="dm-panel layout fit">
             <div class="dm-panel-left layout" [style.width.px]="divider['d1'].size">
                 <div class="layout flex relative">
-                    <div class="layout vertical fit scroll">
-                        <b class="mb1 fs-l">Dialog options:</b>
+                    <div class="dm-panel-left-options layout vertical fit scroll">
+                        <b class="fs-l">Dialog options:</b>
                         <div class="layout center">
+                            <span>Attach to:</span>
+                            <nz-select style="width: 180px" [(ngModel)]="attachTo">
+                                <nz-option [nzValue]="null" nzLabel="<body>"></nz-option>
+                                <nz-option [nzValue]="rightPanel" nzLabel="#rightPanel"></nz-option>
+                                <nz-option nzValue="#rightPanel" nzLabel="id='rightPanel'"></nz-option>
+                            </nz-select>
                         </div>
-                        <button class="mt1" nz-button nzType="primary" (click)="showDialog1($event)">Show dialog attached to &lt;body&gt;</button>
-                        <button class="mt1" nz-button nzType="primary" (click)="showDialog1($event, rightPanel)">Show dialog attached to #rightPanel</button>
-                        <button class="mt1" nz-button nzType="primary" (click)="showDialog1($event, '#rightPanel')">Show dialog attached to id="rightPanel"</button>
-                        <button class="mt1" nz-button nzType="danger" (click)="clearDialogs()">Remove all dialogs</button>
+                        <div class="layout center">
+                            <span>Position:</span>
+                            <nz-select style="width: 180px" [(ngModel)]="config.position">
+                                <nz-option nzValue="point" nzLabel="point"></nz-option>
+                                <nz-option nzValue="center" nzLabel="center"></nz-option>
+                                <nz-option nzValue="fill" nzLabel="fill"></nz-option>
+                            </nz-select>
+                        </div>
+                        <div *ngIf="config.position == 'fill'" class="layout center">
+                            <span>Fill padding:</span>
+                            <nz-input-number [nzMin]="0" [nzMax]="100" [nzStep]="1" [(ngModel)]="config.fillPadding"></nz-input-number>
+                        </div>
+                        <label class="mt2" nz-checkbox [(ngModel)]="config.backdrop">Show backdrop</label>
+                        <div *ngIf="config.backdrop" class="layout center">
+                            <span>Backdrop opacity:</span>
+                            <nz-input-number [nzMin]="0" [nzMax]="1" [nzStep]=".01" [(ngModel)]="config.backdropOpacity"></nz-input-number>
+                        </div>
+                        <div *ngIf="config.backdrop" class="layout center">
+                            <span>Backdrop&nbsp;class:</span>
+                            <input nz-input [(ngModel)]="config.backdropClass">
+                        </div>
+                        <label nz-checkbox class="ml0 mt2" [(ngModel)]="config.draggable">Draggable</label>
+                        <label nz-checkbox class="ml0" [(ngModel)]="config.resizable">Resizable</label>
+                        <div class="layout center">
+                            <span>Width:</span>
+                            <nz-input-number [(ngModel)]="config.minWidth" nzPlaceHolder="min"></nz-input-number>
+                            <span class="mh025">-</span>
+                            <nz-input-number [(ngModel)]="config.maxWidth" nzPlaceHolder="max"></nz-input-number>
+                        </div>
+                        <div class="layout center">
+                            <span>Height:</span>
+                            <nz-input-number [(ngModel)]="config.minHeight" nzPlaceHolder="min"></nz-input-number>
+                            <span class="mh025">-</span>
+                            <nz-input-number [(ngModel)]="config.maxHeight" nzPlaceHolder="max"></nz-input-number>
+                        </div>
+                        <label class="mt2" nz-checkbox [(ngModel)]="config.animOpen">Open animation</label>
+                        <div *ngIf="config.animOpen" class="layout center">
+                            <span>Duration:</span>
+                            <nz-input-number [nzMin]="0" [(ngModel)]="config.animOpenDuration" nzPkaceholder="ms"></nz-input-number>
+                        </div>
+                        <div *ngIf="config.animOpen" class="layout center">
+                            <span>Function:</span>
+                            <input nz-input [(ngModel)]="config.animOpenFn" nzPkaceholder="linear">
+                        </div>
+                        <label class="mt2 ml0" nz-checkbox [(ngModel)]="config.animClose">Close animation</label>
+                        <div *ngIf="config.animClose" class="layout center">
+                            <span>Duration:</span>
+                            <nz-input-number [nzMin]="0" [(ngModel)]="config.animCloseDuration" nzPkaceholder="ms"></nz-input-number>
+                        </div>
+                        <div *ngIf="config.animClose" class="layout center">
+                            <span>Function:</span>
+                            <input nz-input [(ngModel)]="config.animCloseFn" nzPkaceholder="linear">
+                        </div>
+                        <div class="layout center mt2">
+                            <span>Host&nbsp;class:</span>
+                            <input nz-input [(ngModel)]="config.hostClass">
+                        </div>
+                        <div class="layout center">
+                            <span>Dialog&nbsp;class:</span>
+                            <input nz-input [(ngModel)]="config.dialogClass">
+                        </div>
+                        <button class="mt2" nz-button nzType="primary" (click)="showDialog1($event)">Show dialog</button>
+                        <button nz-button nzType="danger" (click)="clearDialogs()">Remove all dialogs</button>
                     </div>
                 </div>
                 <div dm-divider class="dm-divider-vert layout center-center" style="width: 12px"

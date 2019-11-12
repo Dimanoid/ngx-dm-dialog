@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { Point } from './dm-divider.module';
-import { DmDialogService } from '@dimanoid/ngx-dm-dialog';
+import { DmDialogService, DmDialogConfig } from '@dimanoid/ngx-dm-dialog';
 import { Dialog1Component } from './dialog1.component';
 
 @Component({
@@ -22,6 +22,8 @@ export class AppComponent implements OnInit {
             size?: number
         }
     } = {};
+    config: DmDialogConfig = new DmDialogConfig({ dialogClass: 'layout' });
+    attachTo: Element | string = '#rightPanel';
 
     constructor(private _ds: DmDialogService) {
         this.divider['d1'] = { min: 200, max: 700, vertical: true, size: 300 };
@@ -69,22 +71,17 @@ export class AppComponent implements OnInit {
         }
     }
 
-    showDialog1(e: MouseEvent, parent?: Element | string) {
-        const dr = this._ds.add(Dialog1Component, {
-            hostElement: parent,
-            config: {
-                origin: e.target as HTMLElement,
-                position: 'center',
-                fillPadding: 20,
-                minHeight: Math.round(Math.random() * 600 + 200),
-                minWidth: Math.round(Math.random() * 1200 + 300),
-                hostClass: 'layout'
-            }
-        });
-        console.log('showDialog1 e:', e);
+    showDialog1(e: MouseEvent) {
+        this.config.origin = e.target as HTMLElement;
+        const dr = this._ds.add(Dialog1Component, { hostElement: this.attachTo, config: this.config });
+        console.log('showDialog1', dr);
         const inst = dr.componentRef.instance;
-        inst.fill = false;
-        inst.text = 'parent="' + (typeof parent == 'string' ? parent : (parent ? this._getElementSelector(parent) : '<body>')) + '"';
+        inst.fill = this.config.position == 'fill';
+        inst.text = 'parent="' + (
+            typeof this.attachTo == 'string'
+                ? this.attachTo
+                : (this.attachTo ? this._getElementSelector(this.attachTo) : '<body>')
+        ) + '"';
         inst.closeDialog.subscribe(() => this._ds.remove(dr.id));
     }
 
