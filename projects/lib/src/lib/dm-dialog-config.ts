@@ -43,11 +43,11 @@ export class DmDialogConfig implements IDmDialogConfig {
     minHeight: number;
     maxHeight: number;
     animOpen: boolean = true;
-    animOpenDuration: number = 500;
-    animOpenFn: string = 'cubic-bezier(.19, 1, .22, 1)';
+    animOpenDuration: number = 1000;
+    animOpenFn: string = 'cubic-bezier(.19,1,.22,1)';
     animClose: boolean = true;
-    animCloseDuration: number = 500;
-    animCloseFn: string = 'cubic-bezier(.19, 1, .22, 1)';
+    animCloseDuration: number = 1000;
+    animCloseFn: string = 'cubic-bezier(.19,1,.22,1)';
     hostClass: string;
     backdropClass: string;
     dialogClass: string;

@@ -22,8 +22,15 @@
     }
 }
 
-.ngx-dm-dialog-backdrop {
-    background: #000;
+.ngx-dm-dialog-wrapper {
+    .ngx-dm-dialog-backdrop {
+        background: #000;
+    }
+    .ngx-dm-dialog-animbox {
+        background: #FFC;
+        border: 1px solid #800;
+        box-shadow: 1px 1px 5px 3px #ccc;
+    }
 }
 
 .dm-divider, 
