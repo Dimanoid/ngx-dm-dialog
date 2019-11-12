@@ -5,5 +5,5 @@ export class DmDialogRef<T> {
     id: number;
     config: IDmDialogConfig;
     componentRef: ComponentRef<T>;
-    backdropElement: Element;
+    wrapperElement: Element;
 }

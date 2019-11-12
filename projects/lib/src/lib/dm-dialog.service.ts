@@ -97,7 +97,7 @@ export class DmDialogService {
     private _remove<T>(dialogRef: DmDialogRef<T>) {
         this._appRef.detachView(dialogRef.componentRef.hostView);
         dialogRef.componentRef.destroy();
-        this._renderer.removeChild(this._renderer.parentNode(dialogRef.backdropElement), dialogRef.backdropElement);
+        this._renderer.removeChild(this._renderer.parentNode(dialogRef.wrapperElement), dialogRef.wrapperElement);
     }
 
     clear() {
@@ -120,23 +120,45 @@ export class DmDialogService {
     }
 
     private _showDialog<T>(dialogRef: DmDialogRef<T>, element: Element): void {
-        if (dialogRef.config.backdrop) {
-            const wrapper = this._renderer.createElement('div');
-            this._renderer.setStyle(wrapper, 'position', 'absolute');
-            this._renderer.setStyle(wrapper, 'top', 0);
-            this._renderer.setStyle(wrapper, 'right', 0);
-            this._renderer.setStyle(wrapper, 'bottom', 0);
-            this._renderer.setStyle(wrapper, 'left', 0);
-            this._renderer.setStyle(wrapper, 'opacity', dialogRef.config.backdropOpacity);
-            this._renderer.addClass(wrapper, 'ngx-dm-dialog-backdrop');
-            this._renderer.appendChild(element, wrapper);
-            dialogRef.backdropElement = wrapper;
+        const cfg = dialogRef.config;
+
+        const wrapper = this._renderer.createElement('div');
+        this._renderer.setStyle(wrapper, 'position', 'absolute');
+        this._renderer.setStyle(wrapper, 'top', 0);
+        this._renderer.setStyle(wrapper, 'right', 0);
+        this._renderer.setStyle(wrapper, 'bottom', 0);
+        this._renderer.setStyle(wrapper, 'left', 0);
+        this._renderer.addClass(wrapper, 'ngx-dm-dialog-wrapper');
+        if (cfg.hostClass) {
+            this._renderer.addClass(wrapper, cfg.hostClass);
+        }
+        this._renderer.appendChild(element, wrapper);
+        dialogRef.wrapperElement = wrapper;
+
+        let backdrop;
+        if (cfg.backdrop) {
+            backdrop = this._renderer.createElement('div');
+            this._renderer.setStyle(backdrop, 'position', 'absolute');
+            this._renderer.setStyle(backdrop, 'top', 0);
+            this._renderer.setStyle(backdrop, 'right', 0);
+            this._renderer.setStyle(backdrop, 'bottom', 0);
+            this._renderer.setStyle(backdrop, 'left', 0);
+            this._renderer.setStyle(backdrop, 'opacity', cfg.animOpen ? 0 : cfg.backdropOpacity);
+            this._renderer.addClass(backdrop, 'ngx-dm-dialog-backdrop');
+            if (cfg.backdropClass) {
+                this._renderer.addClass(backdrop, cfg.backdropClass);
+            }
+            this._renderer.setStyle(backdrop, 'opacity', 0);
+            if (cfg.animOpen) {
+                this._renderer.setStyle(backdrop, 'transition',
+                    'opacity ' + Math.round(cfg.animOpenDuration / 2) + 'ms ' + cfg.animOpenFn);
+            }
+            this._renderer.appendChild(wrapper, backdrop);
         }
 
         const hostView = this._getHostElement(dialogRef.componentRef);
-        const cfg = dialogRef.config;
-        if (cfg.hostClass) {
-            this._renderer.addClass(hostView, cfg.hostClass);
+        if (cfg.dialogClass) {
+            this._renderer.addClass(hostView, cfg.dialogClass);
         }
 
         let start: Rect;
@@ -208,15 +230,21 @@ export class DmDialogService {
             }
         }
         this._renderer.setStyle(hostView, 'opacity', 0);
-        this._renderer.appendChild(element, hostView);
-        if (cfg.position == 'center') {
-            setTimeout(() => { // TODO: find out how to correctly detect when view is fully rendered
+        if (cfg.animOpen) {
+            this._renderer.setStyle(hostView, 'transition', 'opacity ' + cfg.animOpenDuration + 'ms ' + cfg.animOpenFn);
+        }
+        this._renderer.appendChild(wrapper, hostView);
+        setTimeout(() => { // TODO: find out how to correctly detect when view is fully rendered
+            if (cfg.position == 'center') {
                 const dbb = hostView.getBoundingClientRect();
                 this._renderer.setStyle(hostView, 'left', Math.round((hr.w - dbb.width) / 2) + 'px');
                 this._renderer.setStyle(hostView, 'top', Math.round((hr.h - dbb.height) / 2) + 'px');
-                this._renderer.setStyle(hostView, 'opacity', 1);
-            });
-        }
+            }
+            this._renderer.setStyle(hostView, 'opacity', 1);
+            if (cfg.animOpen && backdrop) {
+                this._renderer.setStyle(backdrop, 'opacity', cfg.backdropOpacity);
+            }
+        });
     }
 
     private _animateDialogOpening(duration: number): void {
