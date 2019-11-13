@@ -74,7 +74,6 @@ export class AppComponent implements OnInit {
     showDialog1(e: MouseEvent) {
         this.config.origin = e.target as HTMLElement;
         const dr = this._ds.add(Dialog1Component, { hostElement: this.attachTo, config: this.config });
-        console.log('showDialog1', dr);
         const inst = dr.componentRef.instance;
         inst.fill = this.config.position == 'fill';
         inst.text = 'parent="' + (
