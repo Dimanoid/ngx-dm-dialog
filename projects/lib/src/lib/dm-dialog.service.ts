@@ -128,12 +128,16 @@ export class DmDialogService {
         this._renderer.setStyle(wrapper, 'right', 0);
         this._renderer.setStyle(wrapper, 'bottom', 0);
         this._renderer.setStyle(wrapper, 'left', 0);
+        this._renderer.setStyle(wrapper, 'overflow', 'hidden');
         this._renderer.addClass(wrapper, 'ngx-dm-dialog-wrapper');
         if (cfg.hostClass) {
             this._renderer.addClass(wrapper, cfg.hostClass);
         }
         this._renderer.appendChild(element, wrapper);
         dialogRef.wrapperElement = wrapper;
+        // const wbb = wrapper.getBoundingClientRect();
+        // const wdx = wbb.left;
+        // const wdy = wbb.top;
 
         let animbox: HTMLDivElement;
         if (cfg.animOpen) {
@@ -179,35 +183,36 @@ export class DmDialogService {
         let start: Rect;
         if (cfg.origin) {
             if (cfg.origin instanceof Rect) {
-                start = new Rect(cfg.origin.x, cfg.origin.y, cfg.origin.w, cfg.origin.h);
+                start = cfg.origin;
             }
             else if (cfg.origin instanceof Point) {
                 start = new Rect(cfg.origin.x, cfg.origin.y, 1, 1);
             }
             else if (cfg.origin instanceof Element) {
                 const or = cfg.origin.getBoundingClientRect();
-                start = new Rect(or.left, or.top, or.width, or.height);
+                const oo = this._getOffset(cfg.origin as HTMLElement);
+                const oe = this._getOffset(element as HTMLElement);
+                start = new Rect(oo.x - oe.x, oo.y - oe.y, or.width, or.height);
             }
         }
 
         const r = element.getBoundingClientRect();
-        const hr = new Rect(r.left, r.top, r.width, r.height);
-        const hw2 = Math.round(hr.w / 2);
-        const hh2 = Math.round(hr.h / 2);
+        const hw = r.width;
+        const hh = r.height;
         this._renderer.setStyle(dialog, 'position', 'absolute');
         if (!start) {
             cfg.position = 'center';
-            start = new Rect(hw2 - 1, hh2 - 1, 2, 2);
+            start = new Rect(Math.round(hw / 2) - 1, Math.round(hh / 2) - 1, 2, 2);
         }
         dialogRef.origin = start;
 
         let end: Rect;
         if (cfg.position == 'fill') {
-            this._renderer.setStyle(dialog, 'left', `${cfg.fillPadding}px`);
-            this._renderer.setStyle(dialog, 'top', `${cfg.fillPadding}px`);
-            this._renderer.setStyle(dialog, 'right', `${cfg.fillPadding}px`);
-            this._renderer.setStyle(dialog, 'bottom', `${cfg.fillPadding}px`);
-            end = new Rect(cfg.fillPadding, cfg.fillPadding, r.width - cfg.fillPadding * 2, r.height - cfg.fillPadding * 2);
+            this._renderer.setStyle(dialog, 'left', `${cfg.positionPadding}px`);
+            this._renderer.setStyle(dialog, 'top', `${cfg.positionPadding}px`);
+            this._renderer.setStyle(dialog, 'right', `${cfg.positionPadding}px`);
+            this._renderer.setStyle(dialog, 'bottom', `${cfg.positionPadding}px`);
+            end = new Rect(cfg.positionPadding, cfg.positionPadding, r.width - cfg.positionPadding * 2, r.height - cfg.positionPadding * 2);
         }
         else if (cfg.position == 'point') {
             this._renderer.setStyle(dialog, 'left', `${start.x}px`);
@@ -216,13 +221,13 @@ export class DmDialogService {
                 this._renderer.setStyle(dialog, 'min-width', `${cfg.minWidth}px`);
             }
             if (cfg.maxWidth) {
-                this._renderer.setStyle(dialog, 'max-width', `${cfg.maxWidth}px`);
+                this._renderer.setStyle(dialog, 'max-width', (cfg.maxWidth > hw ? hw : cfg.maxWidth) + 'px');
             }
             if (cfg.minHeight) {
                 this._renderer.setStyle(dialog, 'min-height', `${cfg.minHeight}px`);
             }
             if (cfg.maxHeight) {
-                this._renderer.setStyle(dialog, 'max-height', `${cfg.maxHeight}px`);
+                this._renderer.setStyle(dialog, 'max-height', (cfg.maxHeight > hh ? hh : cfg.maxHeight) + 'px');
             }
             end = new Rect(
                 start.x,
@@ -236,38 +241,71 @@ export class DmDialogService {
                 this._renderer.setStyle(dialog, 'min-width', `${cfg.minWidth}px`);
             }
             if (cfg.maxWidth) {
-                this._renderer.setStyle(dialog, 'max-width', `${cfg.maxWidth}px`);
+                this._renderer.setStyle(dialog, 'max-width', (cfg.maxWidth > hw ? hw : cfg.maxWidth) + 'px');
             }
             if (cfg.minHeight) {
                 this._renderer.setStyle(dialog, 'min-height', `${cfg.minHeight}px`);
             }
             if (cfg.maxHeight) {
-                this._renderer.setStyle(dialog, 'max-height', `${cfg.maxHeight}px`);
+                this._renderer.setStyle(dialog, 'max-height', (cfg.maxHeight > hh ? hh : cfg.maxHeight) + 'px');
             }
+            end = new Rect();
         }
         this._renderer.setStyle(dialog, 'opacity', 0);
-        if (cfg.animOpen) {
-            this._renderer.setStyle(dialog, 'transition', `opacity ${at}ms ${cfg.animOpenFn}`);
-        }
         this._renderer.appendChild(wrapper, dialog);
         setTimeout(() => { // TODO: find out how to correctly detect when view is fully rendered
             const dbb = dialog.getBoundingClientRect();
-            const dx = Math.round((hr.w - dbb.width) / 2);
-            const dy = Math.round((hr.h - dbb.height) / 2);
-            if (cfg.position == 'center') {
-                this._renderer.setStyle(dialog, 'left', `${dx}px`);
-                this._renderer.setStyle(dialog, 'top', `${dy}px`);
+            end.x = Math.round((hw - dbb.width) / 2);
+            end.y = Math.round((hh - dbb.height) / 2);
+            if (end.x < 0) {
+                end.x = 0;
+            }
+            if (end.y < 0) {
+                end.y = 0;
+            }
+            if (cfg.position == 'center' || cfg.position == 'point') {
+                end.w = dbb.width;
+                end.h = dbb.height;
+                if (cfg.position == 'point') {
+                    end.w = dbb.width;
+                    end.h = dbb.height;
+                    const p = cfg.positionPadding || 0;
+                    if (start.x + p + end.w <= hw) {
+                        end.x = start.x + p;
+                    }
+                    else if (start.x - p - end.w >= 0) {
+                        end.x = start.x - p - end.w;
+                    }
+                    else {
+                        end.x = hw - p - end.w;
+                    }
+                    if (start.y + p + end.h <= hh) {
+                        end.y = start.y + p;
+                    }
+                    else if (start.y - p - end.h >= 0) {
+                        end.y = start.y - p - end.h;
+                    }
+                    else {
+                        end.y = hh - p - end.h;
+                    }
+                    if (end.x < 0) {
+                        end.x = 0;
+                    }
+                    if (end.y < 0) {
+                        end.y = 0;
+                    }
+                }
+                this._renderer.setStyle(dialog, 'left', `${end.x}px`);
+                this._renderer.setStyle(dialog, 'top', `${end.y}px`);
             }
             if (cfg.animOpen && backdrop) {
                 this._renderer.setStyle(backdrop, 'opacity', cfg.backdropOpacity);
             }
             if (cfg.animOpen && animbox && at > 40) {
-                const r1 = start;
-                const r2 = new Rect(dx, dy, dbb.width, dbb.height);
                 animbox.animate(
                     [
-                        { top: `${r1.y}px`, left: `${r1.x}px`, width: `${r1.w}px`, height: `${r1.h}px`, opacity: .1 },
-                        { offset: 1, top: `${r2.y}px`, left: `${r2.x}px`, width: `${r2.w}px`, height: `${r2.h}px`, opacity: 1 }
+                        { top: `${start.y}px`, left: `${start.x}px`, width: `${start.w}px`, height: `${start.h}px`, opacity: .1 },
+                        { offset: 1, top: `${end.y}px`, left: `${end.x}px`, width: `${end.w}px`, height: `${end.h}px`, opacity: 1 }
                     ],
                     { duration: at - 40, delay: 10, endDelay: at, easing: cfg.animOpenFn }
                 );
@@ -285,29 +323,40 @@ export class DmDialogService {
             this._remove(dialogRef);
             return;
         }
+        const wbb = dialogRef.wrapperElement.getBoundingClientRect();
+        const wdx = wbb.left;
+        const wdy = wbb.top;
         const dialog = this._getHostElement(dialogRef.componentRef);
         const at = Math.round(cfg.animCloseDuration / 2);
         const dbb = dialog.getBoundingClientRect();
-        this._renderer.setStyle(dialog, 'transition', `opacity ${at}ms ${cfg.animCloseFn}`);
         if (dialogRef.backdropElement) {
-            this._renderer.setStyle(dialogRef.backdropElement, 'transition', `opacity ${at}ms ${cfg.animCloseFn}`);
+            this._renderer.setStyle(dialogRef.backdropElement, 'transition', `opacity ${Math.round(at / 2)}ms`);
             this._renderer.setStyle(dialogRef.backdropElement, 'opacity', 0);
         }
-        const r1 = new Rect(dbb.left, dbb.top, dbb.width, dbb.height);
+        const r1 = new Rect(dbb.left - wdx, dbb.top - wdy, dbb.width, dbb.height);
         const r2 = new Rect(dialogRef.origin.x, dialogRef.origin.y, 2, 2);
         setTimeout(() => {
             this._renderer.setStyle(dialog, 'opacity', 0);
-            setTimeout(() => {
-                dialogRef.animboxElement.animate(
-                    [
-                        { top: `${r1.y}px`, left: `${r1.x}px`, width: `${r1.w}px`, height: `${r1.h}px`, opacity: 1 },
-                        { offset: 1, top: `${r2.y}px`, left: `${r2.x}px`, width: `${r2.w}px`, height: `${r2.h}px`, opacity: 0 }
-                    ],
-                    { duration: at - 40, delay: 10, endDelay: at, easing: cfg.animCloseFn }
-                );
-            }, at / 2);
+            dialogRef.animboxElement.animate(
+                [
+                    { top: `${r1.y}px`, left: `${r1.x}px`, width: `${r1.w}px`, height: `${r1.h}px`, opacity: 1 },
+                    { offset: 1, top: `${r2.y}px`, left: `${r2.x}px`, width: `${r2.w}px`, height: `${r2.h}px`, opacity: 0 }
+                ],
+                { duration: at - 40, delay: 10, endDelay: at, easing: cfg.animCloseFn }
+            );
             setTimeout(() => this._remove(dialogRef), cfg.animCloseDuration);
         });
+    }
+
+    private _getOffset(el: HTMLElement): { x: number, y: number } {
+        let _x = 0;
+        let _y = 0;
+        while (el && !isNaN(el.offsetLeft) && !isNaN(el.offsetTop)) {
+            _x += el.offsetLeft - el.scrollLeft;
+            _y += el.offsetTop - el.scrollTop;
+            el = el.offsetParent as HTMLElement;
+        }
+        return { y: _y, x: _x };
     }
 
 }

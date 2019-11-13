@@ -23,9 +23,9 @@
                                 <nz-option nzValue="fill" nzLabel="fill"></nz-option>
                             </nz-select>
                         </div>
-                        <div *ngIf="config.position == 'fill'" class="layout center">
-                            <span>Fill padding:</span>
-                            <nz-input-number [nzMin]="0" [nzMax]="100" [nzStep]="1" [(ngModel)]="config.fillPadding"></nz-input-number>
+                        <div *ngIf="config.position == 'fill' || config.position == 'point'" class="layout center">
+                            <span>Position padding:</span>
+                            <nz-input-number [nzMin]="0" [nzMax]="100" [nzStep]="1" [(ngModel)]="config.positionPadding"></nz-input-number>
                         </div>
                         <label class="mt2" nz-checkbox [(ngModel)]="config.backdrop">Show backdrop</label>
                         <div *ngIf="config.backdrop" class="layout center">
@@ -89,10 +89,25 @@
                 </div>
             </div>
 
-            <div id="rightPanel" class="layout flex relative" #rightPanel>
-                <div class="fit scroll">
-                    
-
+            <div id="rightPanel" class="layout flex vertical relative" #rightPanel>
+                <div class="layout flex">
+                    <div class="layout flex center-center">
+                        <button class="mt2" nz-button nzType="primary" (click)="showDialog1($event)">Show dialog</button>
+                    </div>
+                    <div class="layout flex center-center">
+                        <button class="mt2" nz-button nzType="primary" (click)="showDialog1($event)">Show dialog</button>
+                    </div>
+                </div>
+                <div class="layout flex center-center">
+                    <button class="mt2" nz-button nzType="primary" (click)="showDialog1($event)">Show dialog</button>
+                </div>
+                <div class="layout flex">
+                    <div class="layout flex center-center">
+                        <button class="mt2" nz-button nzType="primary" (click)="showDialog1($event)">Show dialog</button>
+                    </div>
+                    <div class="layout flex center-center">
+                        <button class="mt2" nz-button nzType="primary" (click)="showDialog1($event)">Show dialog</button>
+                    </div>
                 </div>
             </div>
         </div>

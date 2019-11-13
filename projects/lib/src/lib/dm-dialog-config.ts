@@ -6,7 +6,7 @@ export interface IDmDialogConfig {
     draggable?: boolean;
     resizable?: boolean;
     position?: 'center' | 'fill' | 'point';
-    fillPadding?: number;
+    positionPadding?: number;
     origin?: Element | Point | Rect;
     minWidth?: number;
     maxWidth?: number;
@@ -25,7 +25,7 @@ export interface IDmDialogConfig {
 
 const CONFIG_FIELDS = [
     'backdrop', 'backdropOpacity', 'draggable', 'resizeable', 'position',
-    'fillPadding', 'origin', 'minWidth', 'maxWidth', 'minHeight', 'maxHeight',
+    'positionPadding', 'origin', 'minWidth', 'maxWidth', 'minHeight', 'maxHeight',
     'animOpen', 'animOpenDuration', 'animClose', 'animCloseDuration',
     'hostClass', 'backdropClass', 'dialogClass'
 ];
@@ -36,7 +36,7 @@ export class DmDialogConfig implements IDmDialogConfig {
     draggable: boolean = true;
     resizable: boolean = false;
     position: 'center' | 'fill' | 'point' = 'center';
-    fillPadding: number = 0;
+    positionPadding: number = 0;
     origin: Element | Point | Rect;
     minWidth: number;
     maxWidth: number;
@@ -44,10 +44,10 @@ export class DmDialogConfig implements IDmDialogConfig {
     maxHeight: number;
     animOpen: boolean = true;
     animOpenDuration: number = 1000;
-    animOpenFn: string = 'cubic-bezier(.19,1,.22,1)';
+    animOpenFn: string = 'cubic-bezier(.82,.01,.26,1)';
     animClose: boolean = true;
     animCloseDuration: number = 1000;
-    animCloseFn: string = 'cubic-bezier(.19,1,.22,1)';
+    animCloseFn: string = 'cubic-bezier(.82,.01,.26,1)';
     hostClass: string;
     backdropClass: string;
     dialogClass: string;
