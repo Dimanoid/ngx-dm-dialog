@@ -1,6 +1,7 @@
 import { IDmDialogConfig } from './dm-dialog-config';
 import { ComponentRef } from '@angular/core';
 import { Rect } from './_utils';
+import { Observable } from 'rxjs';
 
 export class DmDialogRef<T> {
     id: number;
@@ -10,4 +11,7 @@ export class DmDialogRef<T> {
     backdropElement: Element;
     animboxElement: Element;
     origin: Rect;
+    data: any;
+    canClose: (dialogRef: DmDialogRef<T>) => boolean | Observable<boolean>;
+    afterClose: (dialogRef: DmDialogRef<T>) => void;
 }

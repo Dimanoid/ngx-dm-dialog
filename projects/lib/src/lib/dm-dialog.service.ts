@@ -16,6 +16,7 @@ import { DmDialogRef } from './dm-dialog-ref';
 import { DmDialogConfig, IDmDialogConfig } from './dm-dialog-config';
 import { DmTemplateWrapperComponent } from './template-wrapper.component';
 import { Point, Rect } from './_utils';
+import { Observable } from 'rxjs';
 
 export type ComponentType<T> = new (...args: any[]) => T;
 
@@ -43,15 +44,21 @@ export class DmDialogService {
         options?: {
             config?: IDmDialogConfig,
             templateContext?: any,
-            hostElement?: Element | string
+            hostElement?: Element | string,
+            canClose?: (dialogRef: DmDialogRef<T>) => boolean | Observable<boolean>,
+            afterClose?: (dialogRef: DmDialogRef<T>) => void
         }
     ): DmDialogRef<T> {
         if (!options) {
             options = {};
         }
+
         const dialogRef = new DmDialogRef<T>();
         dialogRef.id = this._lastId++;
         dialogRef.config = new DmDialogConfig(this._globalConfig).apply(options.config);
+        dialogRef.canClose = options.canClose;
+        dialogRef.afterClose = options.afterClose;
+
         const dialogInjector = Injector.create({
             providers: [
                 { provide: DmDialogRef, useValue: dialogRef }
@@ -85,13 +92,30 @@ export class DmDialogService {
         return dialogRef;
     }
 
-    remove(id: number): boolean {
+    remove(id: number): void {
         if (this._dialogs[id]) {
+            if (this._dialogs[id].canClose) {
+                const res = this._dialogs[id].canClose(this._dialogs[id]);
+                if (!res) {
+                    return;
+                }
+                if (res instanceof Observable) {
+                    const subscription = res.subscribe(result => {
+                        if (result) {
+                            this._hideDialog(this._dialogs[id]);
+                            delete this._dialogs[id];
+                        }
+                        subscription.unsubscribe();
+                    });
+                    return;
+                }
+            }
             this._hideDialog(this._dialogs[id]);
             delete this._dialogs[id];
-            return true;
+            if (this._dialogs[id].afterClose) {
+                this._dialogs[id].afterClose(this._dialogs[id]);
+            }
         }
-        return false;
     }
 
     private _remove<T>(dialogRef: DmDialogRef<T>) {
