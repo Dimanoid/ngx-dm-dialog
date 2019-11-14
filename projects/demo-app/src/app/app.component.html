@@ -76,7 +76,8 @@
                             <span>Dialog&nbsp;class:</span>
                             <input nz-input [(ngModel)]="config.dialogClass">
                         </div>
-                        <button class="mt2" nz-button nzType="primary" (click)="showDialog1($event)">Show dialog</button>
+                        <button class="mt2" nz-button nzType="primary" (click)="showDialog($event, 1)">Show dialog</button>
+                        <button class="mb2" nz-button nzType="primary" (click)="showDialog($event, 2)">Show custom dialog</button>
                         <button nz-button nzType="danger" (click)="clearDialogs()">Remove all dialogs</button>
                     </div>
                 </div>
@@ -92,21 +93,21 @@
             <div id="rightPanel" class="layout flex vertical relative" #rightPanel>
                 <div class="layout flex">
                     <div class="layout flex center-center">
-                        <button class="mt2" nz-button nzType="primary" (click)="showDialog1($event)">Show dialog</button>
+                        <button class="mt2" nz-button nzType="primary" (click)="showDialog($event, 1)">Show dialog</button>
                     </div>
                     <div class="layout flex center-center">
-                        <button class="mt2" nz-button nzType="primary" (click)="showDialog1($event)">Show dialog</button>
+                        <button class="mt2" nz-button nzType="primary" (click)="showDialog($event, 1)">Show dialog</button>
                     </div>
                 </div>
                 <div class="layout flex center-center">
-                    <button class="mt2" nz-button nzType="primary" (click)="showDialog1($event)">Show dialog</button>
+                    <button class="mt2" nz-button nzType="primary" (click)="showDialog($event, 1)">Show dialog</button>
                 </div>
                 <div class="layout flex">
                     <div class="layout flex center-center">
-                        <button class="mt2" nz-button nzType="primary" (click)="showDialog1($event)">Show dialog</button>
+                        <button class="mt2" nz-button nzType="primary" (click)="showDialog($event, 1)">Show dialog</button>
                     </div>
                     <div class="layout flex center-center">
-                        <button class="mt2" nz-button nzType="primary" (click)="showDialog1($event)">Show dialog</button>
+                        <button class="mt2" nz-button nzType="primary" (click)="showDialog($event, 1)">Show dialog</button>
                     </div>
                 </div>
             </div>

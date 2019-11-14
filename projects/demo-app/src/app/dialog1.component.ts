@@ -8,11 +8,27 @@ import { DmDialogService, DmDialogRef } from '@dimanoid/ngx-dm-dialog';
 
 @Component({
     template: `
-    <div [class.fit]="fill" class="layout vertical flex" style="background: #FFC; border: 1px solid #800; box-shadow: 1px 1px 5px 3px #ccc; padding: 10px">
-        Dialog 1 - text: {{ text }}
-        <div class="flex"></div>
-        <button class="start" nz-button (click)="closeDialog.emit()">Close</button>
-    </div>`
+        <dm-dialog>
+            <ng-template #header>
+                <div>DmDialog header</div>
+            </ng-template>
+            <ng-template #content>
+                <div [class.fit]="fill" class="layout vertical flex">
+                    <h2>Custom Dialog</h2>
+                    <div class="layout mb1"><b class="mr05">text:</b><span>{{ text }}</span></div>
+                    <div class="flex"></div>
+                </div>
+            </ng-template>
+            <ng-template #footer>
+                <div class="layout flex">
+                    <div class="flex"></div>
+                    <button nz-button nzType="primary">Action</button>
+                    <button nz-button nzType="danger">Danger Action</button>
+                    <button nz-button (click)="closeDialog.emit()">Close</button>
+                </div>
+            </ng-template>
+        </dm-dialog>
+    `
 })
 export class Dialog1Component {
     @Input() text: string;

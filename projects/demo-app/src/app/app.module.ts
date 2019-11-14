@@ -23,11 +23,13 @@ import { DmDialogModule } from '@dimanoid/ngx-dm-dialog';
 
 import { AppComponent } from './app.component';
 import { Dialog1Component } from './dialog1.component';
+import { Dialog2Component } from './dialog2.component';
 
 @NgModule({
     declarations: [
         AppComponent,
-        Dialog1Component
+        Dialog1Component,
+        Dialog2Component
     ],
     imports: [
         BrowserModule, BrowserAnimationsModule, CommonModule,
@@ -40,7 +42,7 @@ import { Dialog1Component } from './dialog1.component';
         { provide: NZ_I18N, useValue: en_US },
     ],
     entryComponents: [
-        Dialog1Component
+        Dialog1Component, Dialog2Component
     ],
     bootstrap: [AppComponent]
 })

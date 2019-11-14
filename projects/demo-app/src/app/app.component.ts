@@ -2,6 +2,7 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { Point } from './dm-divider.module';
 import { DmDialogService, DmDialogConfig } from '@dimanoid/ngx-dm-dialog';
 import { Dialog1Component } from './dialog1.component';
+import { Dialog2Component } from './dialog2.component';
 
 @Component({
     selector: 'app-root',
@@ -71,9 +72,11 @@ export class AppComponent implements OnInit {
         }
     }
 
-    showDialog1(e: MouseEvent) {
+    showDialog(e: MouseEvent, n: number) {
         this.config.origin = e.target as HTMLElement;
-        const dr = this._ds.add(Dialog1Component, { hostElement: this.attachTo, config: this.config });
+        const dr = n == 1
+            ? this._ds.add(Dialog1Component, { hostElement: this.attachTo, config: this.config })
+            : this._ds.add(Dialog2Component, { hostElement: this.attachTo, config: this.config });
         const inst = dr.componentRef.instance;
         inst.fill = this.config.position == 'fill';
         inst.text = 'parent="' + (
