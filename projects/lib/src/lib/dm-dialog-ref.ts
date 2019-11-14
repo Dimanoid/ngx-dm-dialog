@@ -12,6 +12,7 @@ export class DmDialogRef<T> {
     animboxElement: Element;
     origin: Rect;
     data: any;
+    afterOpen: (dialogRef: DmDialogRef<T>) => void;
     canClose: (dialogRef: DmDialogRef<T>) => boolean | Observable<boolean>;
     afterClose: (dialogRef: DmDialogRef<T>) => void;
 }

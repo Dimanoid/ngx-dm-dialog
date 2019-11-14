@@ -32,7 +32,7 @@ const CONFIG_FIELDS = [
 
 export class DmDialogConfig implements IDmDialogConfig {
     backdrop: boolean = true;
-    backdropOpacity: number = .3;
+    backdropOpacity: number = .5;
     draggable: boolean = true;
     resizable: boolean = false;
     position: 'center' | 'fill' | 'point' = 'center';
@@ -43,10 +43,10 @@ export class DmDialogConfig implements IDmDialogConfig {
     minHeight: number;
     maxHeight: number;
     animOpen: boolean = true;
-    animOpenDuration: number = 1000;
+    animOpenDuration: number = 600;
     animOpenFn: string = 'cubic-bezier(.82,.01,.26,1)';
     animClose: boolean = true;
-    animCloseDuration: number = 1000;
+    animCloseDuration: number = 600;
     animCloseFn: string = 'cubic-bezier(.82,.01,.26,1)';
     hostClass: string;
     backdropClass: string;

@@ -45,6 +45,8 @@ export class DmDialogService {
             config?: IDmDialogConfig,
             templateContext?: any,
             hostElement?: Element | string,
+            data?: any,
+            afterOpen?: (dialogRef: DmDialogRef<T>) => void
             canClose?: (dialogRef: DmDialogRef<T>) => boolean | Observable<boolean>,
             afterClose?: (dialogRef: DmDialogRef<T>) => void
         }
@@ -56,6 +58,8 @@ export class DmDialogService {
         const dialogRef = new DmDialogRef<T>();
         dialogRef.id = this._lastId++;
         dialogRef.config = new DmDialogConfig(this._globalConfig).apply(options.config);
+        dialogRef.data = options.data;
+        dialogRef.afterOpen = options.afterOpen;
         dialogRef.canClose = options.canClose;
         dialogRef.afterClose = options.afterClose;
 
@@ -103,7 +107,6 @@ export class DmDialogService {
                     const subscription = res.subscribe(result => {
                         if (result) {
                             this._hideDialog(this._dialogs[id]);
-                            delete this._dialogs[id];
                         }
                         subscription.unsubscribe();
                     });
@@ -111,10 +114,6 @@ export class DmDialogService {
                 }
             }
             this._hideDialog(this._dialogs[id]);
-            delete this._dialogs[id];
-            if (this._dialogs[id].afterClose) {
-                this._dialogs[id].afterClose(this._dialogs[id]);
-            }
         }
     }
 
@@ -122,6 +121,10 @@ export class DmDialogService {
         this._appRef.detachView(dialogRef.componentRef.hostView);
         dialogRef.componentRef.destroy();
         this._renderer.removeChild(this._renderer.parentNode(dialogRef.wrapperElement), dialogRef.wrapperElement);
+        if (dialogRef.afterClose) {
+            dialogRef.afterClose(dialogRef);
+        }
+        delete this._dialogs[dialogRef.id];
     }
 
     clear() {
@@ -331,12 +334,20 @@ export class DmDialogService {
                         { top: `${start.y}px`, left: `${start.x}px`, width: `${start.w}px`, height: `${start.h}px`, opacity: .1 },
                         { offset: 1, top: `${end.y}px`, left: `${end.x}px`, width: `${end.w}px`, height: `${end.h}px`, opacity: 1 }
                     ],
-                    { duration: at - 40, delay: 10, endDelay: at, easing: cfg.animOpenFn }
+                    { duration: cfg.animOpenDuration - 40, delay: 10, endDelay: 30, easing: cfg.animOpenFn }
                 );
-                setTimeout(() => this._renderer.setStyle(dialog, 'opacity', 1), at - 50);
+                setTimeout(() => {
+                    this._renderer.setStyle(dialog, 'opacity', 1);
+                    if (dialogRef.afterOpen) {
+                        dialogRef.afterOpen(dialogRef);
+                    }
+                }, cfg.animOpenDuration - 50);
             }
             else {
                 this._renderer.setStyle(dialog, 'opacity', 1);
+                if (dialogRef.afterOpen) {
+                    dialogRef.afterOpen(dialogRef);
+                }
             }
         });
     }
@@ -351,6 +362,7 @@ export class DmDialogService {
         const wdx = wbb.left;
         const wdy = wbb.top;
         const dialog = this._getHostElement(dialogRef.componentRef);
+        this._renderer.setStyle(dialog, 'pointer-events', 'none');
         const at = Math.round(cfg.animCloseDuration / 2);
         const dbb = dialog.getBoundingClientRect();
         if (dialogRef.backdropElement) {
@@ -366,7 +378,7 @@ export class DmDialogService {
                     { top: `${r1.y}px`, left: `${r1.x}px`, width: `${r1.w}px`, height: `${r1.h}px`, opacity: 1 },
                     { offset: 1, top: `${r2.y}px`, left: `${r2.x}px`, width: `${r2.w}px`, height: `${r2.h}px`, opacity: 0 }
                 ],
-                { duration: at - 40, delay: 10, endDelay: at, easing: cfg.animCloseFn }
+                { duration: at - 40, delay: 10, endDelay: cfg.animCloseDuration, easing: cfg.animCloseFn }
             );
             setTimeout(() => this._remove(dialogRef), cfg.animCloseDuration);
         });

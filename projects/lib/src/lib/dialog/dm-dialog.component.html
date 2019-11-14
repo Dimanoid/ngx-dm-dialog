@@ -1,2 +1,5 @@
-<div class="dm-dialog-root">
+<div class="ngx-dmd-container">
+    <ng-container *ngIf="headerTpl" [ngTemplateOutlet]="headerTpl"></ng-container>
+    <ng-container *ngIf="contentTpl" [ngTemplateOutlet]="contentTpl"></ng-container>
+    <ng-container *ngIf="footerTpl" [ngTemplateOutlet]="footerTpl"></ng-container>
 </div>
