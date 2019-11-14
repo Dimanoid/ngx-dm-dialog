@@ -1,1 +1,73 @@
 @import '../variables';
+@import '../icons';
+
+.ngx-dmd-container {
+    display: flex;
+    flex: 1;
+    flex-basis: 1e-9px;
+    box-shadow: 0 1px 0.3125rem 0 rgba(0,0,0,.2), 0 0.125rem 0.125rem 0 rgba(0,0,0,.14), 0.125rem 0.3125rem 0.3125rem -0.125rem rgba(0,0,0,.22), 0 0.1875rem 1px -0.125rem rgba(0,0,0,.12);
+    .ngx-dmd-container-inner {
+        position: relative;
+        display: flex;
+        flex: 1;
+        flex-basis: 1e-9px;
+        flex-direction: column;
+        background-color: $containerBgColor;
+        border-top: 6px solid $primaryColor;
+        border-top-left-radius: $headerBorderRadius;
+        border-top-right-radius: $headerBorderRadius;
+        .ngx-dmd-header {
+            background-color: $headerBgColor;
+            color: $headerTextColor;
+            transition: all .5s cubic-bezier(.19,1,.22,1);
+            border-top-left-radius: $headerBorderRadius;
+            border-top-right-radius: $headerBorderRadius;
+            padding: 3px 10px;
+            margin-bottom: 2px;
+            box-shadow: 0 0.125rem 0.125rem 0 rgba(0,0,0,.2);
+            overflow: hidden;
+            font-weight: bold;
+            small {
+                color: $headerSubTextColor;
+                font-weight: normal;
+            }
+            .ngx-dmd-header-buttons {
+                position: absolute;
+                top: -6px;
+                right: 0;
+                display: flex;
+                .ngx-dmd-header-button {
+                    background-color: $primaryColor;
+                    color: $headerBgColor;
+                }
+                .ngx-dmd-header-button {
+                    width: 24px;
+                    height: 24px;
+                    text-align: center;
+                    border-left: 1px solid $headerBgColor;
+                    &:first-child {
+                        border-bottom-left-radius: 5px;
+                    }
+                    &:last-child {
+                        border-top-right-radius: $headerBorderRadius;
+                    }
+                }
+            }
+        }
+        .ngx-dmd-content {
+            display: flex;
+            flex: 1;
+            flex-basis: 1e-9px;
+            flex-direction: column;
+            background-color: $contentBgColor;
+            color: $contentTextColor;
+            padding: 5px;
+        }
+        .ngx-dmd-footer {
+            background-color: $footerBgColor;
+            color: $footerTextColor;
+            padding: 5px 10px;
+            box-shadow: 0 -1px 1px 0 rgba(0,0,0,.2);
+        }
+    }
+}

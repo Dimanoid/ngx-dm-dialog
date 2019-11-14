@@ -11,10 +11,10 @@ import { DmDialogService, DmDialogRef } from '@dimanoid/ngx-dm-dialog';
         <dm-dialog>
             <ng-template #header>
                 <div>DmDialog header</div>
+                <small>Subheader text</small>
             </ng-template>
             <ng-template #content>
                 <div [class.fit]="fill" class="layout vertical flex">
-                    <h2>Custom Dialog</h2>
                     <div class="layout mb1"><b class="mr05">text:</b><span>{{ text }}</span></div>
                     <div class="flex"></div>
                 </div>
@@ -22,8 +22,8 @@ import { DmDialogService, DmDialogRef } from '@dimanoid/ngx-dm-dialog';
             <ng-template #footer>
                 <div class="layout flex">
                     <div class="flex"></div>
-                    <button nz-button nzType="primary">Action</button>
-                    <button nz-button nzType="danger">Danger Action</button>
+                    <button class="mr05" nz-button nzType="primary">Action</button>
+                    <button class="mr05" nz-button nzType="danger">Danger Action</button>
                     <button nz-button (click)="closeDialog.emit()">Close</button>
                 </div>
             </ng-template>

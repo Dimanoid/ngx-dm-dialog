@@ -23,7 +23,7 @@ export class AppComponent implements OnInit {
             size?: number
         }
     } = {};
-    config: DmDialogConfig = new DmDialogConfig({ dialogClass: 'layout' });
+    config: DmDialogConfig = new DmDialogConfig({ dialogClass: 'layout', backdropOpacity: .1  });
     attachTo: Element | string = '#rightPanel';
 
     constructor(private _ds: DmDialogService) {

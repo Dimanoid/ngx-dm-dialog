@@ -1,5 +1,20 @@
-<div class="ngx-dmd-container">
-    <ng-container *ngIf="headerTpl" [ngTemplateOutlet]="headerTpl"></ng-container>
-    <ng-container *ngIf="contentTpl" [ngTemplateOutlet]="contentTpl"></ng-container>
-    <ng-container *ngIf="footerTpl" [ngTemplateOutlet]="footerTpl"></ng-container>
+<div class="ngx-dmd-container-inner">
+    <div class="ngx-dmd-header">
+        <ng-container *ngIf="headerTpl" [ngTemplateOutlet]="headerTpl"></ng-container>
+        <ng-template [ngIf]="!headerTpl">{{ titleText }}</ng-template>
+        <div class="ngx-dmd-header-buttons">
+            <div class="ngx-dmd-header-button">
+                <i class="ngx-dmd-icon-font ngx-dmd-icon-expand"></i>
+            </div>
+            <div class="ngx-dmd-header-button">
+                <i class="ngx-dmd-icon-font ngx-dmd-icon-close"></i>
+            </div>
+        </div>
+    </div>
+    <div class="ngx-dmd-content">
+        <ng-container *ngIf="contentTpl" [ngTemplateOutlet]="contentTpl"></ng-container>
+    </div>
+    <div *ngIf="footerTpl" class="ngx-dmd-footer">
+        <ng-container [ngTemplateOutlet]="footerTpl"></ng-container>
+    </div>
 </div>

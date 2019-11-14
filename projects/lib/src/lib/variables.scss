@@ -1,2 +1,14 @@
-$bodyBgColor: #ffffff;
-$textColor: #444444;
+$primaryColor: #5d4037;
+
+$containerBgColor: #ffffff;
+
+$headerBgColor: #ffffff;
+$headerTextColor: $primaryColor;
+$headerSubTextColor: #ccc;
+$headerBorderRadius: 5px;
+
+$contentBgColor: #f0f0f0;
+$contentTextColor: #444444;
+
+$footerBgColor: $headerBgColor;
+$footerTextColor: $contentTextColor;

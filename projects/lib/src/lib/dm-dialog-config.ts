@@ -52,11 +52,11 @@ export class DmDialogConfig implements IDmDialogConfig {
     backdropClass: string;
     dialogClass: string;
 
-    constructor(json?: any) {
+    constructor(json?: IDmDialogConfig) {
         this.apply(json);
     }
 
-    apply(json?: any): DmDialogConfig {
+    apply(json?: IDmDialogConfig): DmDialogConfig {
         if (json && typeof json === 'object') {
             for (const fn of CONFIG_FIELDS) {
                 if (json[fn] !== undefined) {

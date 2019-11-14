@@ -2,7 +2,7 @@ import {
     Component, OnInit, AfterViewInit,
     ChangeDetectionStrategy, ViewEncapsulation,
     Input, ChangeDetectorRef,
-    Output, EventEmitter, OnChanges, SimpleChanges, AfterContentInit, ContentChild, TemplateRef
+    Output, EventEmitter, OnChanges, SimpleChanges, AfterContentInit, ContentChild, TemplateRef, HostBinding
 } from '@angular/core';
 import { InputNumber, InputBoolean } from '../_utils';
 
@@ -18,9 +18,12 @@ import { DmDialogRef } from '../dm-dialog-ref';
 })
 export class DmDialogComponent implements OnInit, AfterViewInit, OnChanges, AfterContentInit {
     @Input() titleText: string;
+
     @ContentChild('header', { static: false }) headerTpl: TemplateRef<any>;
     @ContentChild('content', { static: false }) contentTpl: TemplateRef<any>;
     @ContentChild('footer', { static: false }) footerTpl: TemplateRef<any>;
+
+    @HostBinding('class.ngx-dmd-container') hostContainer = true;
 
     constructor(private _cdr: ChangeDetectorRef, private _ds: DmDialogService, private _dr: DmDialogRef<DmDialogComponent>) {
     }
