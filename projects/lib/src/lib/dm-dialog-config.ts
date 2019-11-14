@@ -3,8 +3,6 @@ import { Point, Rect } from './_utils';
 export interface IDmDialogConfig {
     backdrop?: boolean;
     backdropOpacity?: number;
-    draggable?: boolean;
-    resizable?: boolean;
     position?: 'center' | 'fill' | 'point';
     positionPadding?: number;
     origin?: Element | Point | Rect;
@@ -21,20 +19,21 @@ export interface IDmDialogConfig {
     hostClass?: string;
     backdropClass?: string;
     dialogClass?: string;
+    dialogDraggable?: boolean;
+    dialogResizable?: boolean;
+    dialogShowCloseButton?: boolean;
+    dialogShowMaximizeButton?: boolean;
 }
 
 const CONFIG_FIELDS = [
-    'backdrop', 'backdropOpacity', 'draggable', 'resizeable', 'position',
-    'positionPadding', 'origin', 'minWidth', 'maxWidth', 'minHeight', 'maxHeight',
-    'animOpen', 'animOpenDuration', 'animClose', 'animCloseDuration',
-    'hostClass', 'backdropClass', 'dialogClass'
+    'backdrop', 'backdropOpacity', 'position', 'positionPadding', 'origin', 'minWidth', 'maxWidth', 'minHeight', 'maxHeight',
+    'animOpen', 'animOpenDuration', 'animClose', 'animCloseDuration', 'hostClass', 'backdropClass', 'dialogClass',
+    'dialogDraggable', 'dialogResizable', 'dialogShowCloseButton', 'dialogShowMaximizeButton'
 ];
 
 export class DmDialogConfig implements IDmDialogConfig {
     backdrop: boolean = true;
     backdropOpacity: number = .5;
-    draggable: boolean = true;
-    resizable: boolean = false;
     position: 'center' | 'fill' | 'point' = 'center';
     positionPadding: number = 0;
     origin: Element | Point | Rect;
@@ -51,6 +50,10 @@ export class DmDialogConfig implements IDmDialogConfig {
     hostClass: string;
     backdropClass: string;
     dialogClass: string;
+    dialogDraggable: boolean = true;
+    dialogResizable: boolean = false;
+    dialogShowCloseButton: boolean = true;
+    dialogShowMaximizeButton: boolean = false;
 
     constructor(json?: IDmDialogConfig) {
         this.apply(json);

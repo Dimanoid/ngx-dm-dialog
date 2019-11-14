@@ -6,6 +6,18 @@
     flex: 1;
     flex-basis: 1e-9px;
     box-shadow: 0 1px 0.3125rem 0 rgba(0,0,0,.2), 0 0.125rem 0.125rem 0 rgba(0,0,0,.14), 0.125rem 0.3125rem 0.3125rem -0.125rem rgba(0,0,0,.22), 0 0.1875rem 1px -0.125rem rgba(0,0,0,.12);
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    &.ngx-dmd-dragging {
+        box-shadow: 0 1px 0.3125rem 0 rgba(255,0,0,.2), 0 0.125rem 0.125rem 0 rgba(255,0,0,.14), 0.125rem 0.3125rem 0.3125rem -0.125rem rgba(255,0,0,.22), 0 0.1875rem 1px -0.125rem rgba(255,0,0,.12);
+    }
+    &.ngx-dmd-draggable {
+        cursor: move;
+    }
     .ngx-dmd-container-inner {
         position: relative;
         display: flex;
@@ -22,7 +34,7 @@
             transition: all .5s cubic-bezier(.19,1,.22,1);
             border-top-left-radius: $headerBorderRadius;
             border-top-right-radius: $headerBorderRadius;
-            padding: 3px 10px;
+            padding: 3px 5px;
             margin-bottom: 2px;
             box-shadow: 0 0.125rem 0.125rem 0 rgba(0,0,0,.2);
             overflow: hidden;
@@ -39,6 +51,16 @@
                 .ngx-dmd-header-button {
                     background-color: $primaryColor;
                     color: $headerBgColor;
+                    cursor: pointer;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    &:hover {
+                        background-color: lighten($primaryColor, 15%);
+                    }
+                    &:active > i {
+                        margin: 1px -1px -1px 1px;
+                    }
                 }
                 .ngx-dmd-header-button {
                     width: 24px;
@@ -66,7 +88,7 @@
         .ngx-dmd-footer {
             background-color: $footerBgColor;
             color: $footerTextColor;
-            padding: 5px 10px;
+            padding: 3px 5px;
             box-shadow: 0 -1px 1px 0 rgba(0,0,0,.2);
         }
     }

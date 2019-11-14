@@ -1,13 +1,13 @@
 import {
-    Component, OnInit, AfterViewInit,
-    ChangeDetectionStrategy, ViewEncapsulation,
-    Input, ChangeDetectorRef,
-    Output, EventEmitter, OnChanges, SimpleChanges, AfterContentInit, ContentChild, TemplateRef, HostBinding
+    Component, OnInit, AfterViewInit, ViewEncapsulation,
+    Input, Output, EventEmitter, OnChanges, SimpleChanges, AfterContentInit,
+    ContentChild, TemplateRef, HostBinding, HostListener, Renderer2
 } from '@angular/core';
-import { InputNumber, InputBoolean } from '../_utils';
+import { InputBoolean, Point, getHostElement } from '../_utils';
 
 import { DmDialogService } from '../dm-dialog.service';
 import { DmDialogRef } from '../dm-dialog-ref';
+import { IDmDialogConfig } from '../dm-dialog-config';
 
 @Component({
     selector: 'dm-dialog',
@@ -23,9 +23,19 @@ export class DmDialogComponent implements OnInit, AfterViewInit, OnChanges, Afte
     @ContentChild('content', { static: false }) contentTpl: TemplateRef<any>;
     @ContentChild('footer', { static: false }) footerTpl: TemplateRef<any>;
 
-    @HostBinding('class.ngx-dmd-container') hostContainer = true;
+    @Input() @InputBoolean() maximized: boolean = false;
+    @Output() maximizedChange: EventEmitter<boolean> = new EventEmitter();
 
-    constructor(private _cdr: ChangeDetectorRef, private _ds: DmDialogService, private _dr: DmDialogRef<DmDialogComponent>) {
+    @HostBinding('class.ngx-dmd-container') hostContainer: boolean = true;
+    @HostBinding('class.ngx-dmd-dragging') dragging: boolean = false;
+    @HostBinding('class.ngx-dmd-draggable') draggable: boolean = false;
+
+    config: IDmDialogConfig;
+    dragStartPoint: Point;
+
+    constructor(private _renderer: Renderer2, private _ds: DmDialogService, private _dr: DmDialogRef<DmDialogComponent>) {
+        this.config = this._dr.config;
+        this.draggable = this.config.dialogDraggable;
     }
 
     ngOnInit() {
@@ -38,6 +48,41 @@ export class DmDialogComponent implements OnInit, AfterViewInit, OnChanges, Afte
     }
 
     ngOnChanges(changes: SimpleChanges): void {
+    }
+
+    closeDialog() {
+        this._ds.remove(this._dr.id);
+    }
+
+    dragStart(e: MouseEvent) {
+        if (!this._dr.config.dialogDraggable || this._dr.config.position != 'fill') {
+            return;
+        }
+        this.dragStartPoint = new Point(e.clientX, e.clientY);
+        this.dragging = true;
+        console.log('dragStart', this.dragStartPoint);
+    }
+
+    dragEnd(e: MouseEvent) {
+        if (!this.dragging) {
+            return;
+        }
+        this.dragging = false;
+        this.dragStartPoint = undefined;
+        console.log('dragEnd');
+    }
+
+    @HostListener('document:mousemove', ['$event'])
+    dragMove(e: MouseEvent) {
+        if (!this.dragging) {
+            return;
+        }
+        const dialog = getHostElement(this._dr.componentRef);;
+        const x = +dialog.style.left + e.clientX - this.dragStartPoint.x;
+        const y = +dialog.style.top + e.clientY - this.dragStartPoint.y;
+        this._renderer.setStyle(dialog, 'left', x);
+        this._renderer.setStyle(dialog, 'top', y);
+        console.log('dragMove', `${x}x${y}`);
     }
 
 }

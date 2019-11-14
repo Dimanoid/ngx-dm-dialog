@@ -15,7 +15,7 @@ import { DOCUMENT } from '@angular/common';
 import { DmDialogRef } from './dm-dialog-ref';
 import { DmDialogConfig, IDmDialogConfig } from './dm-dialog-config';
 import { DmTemplateWrapperComponent } from './template-wrapper.component';
-import { Point, Rect } from './_utils';
+import { Point, Rect, getHostElement } from './_utils';
 import { Observable } from 'rxjs';
 
 export type ComponentType<T> = new (...args: any[]) => T;
@@ -142,10 +142,6 @@ export class DmDialogService {
         this._globalConfig = new DmDialogConfig(config);
     }
 
-    private _getHostElement(componentRef: ComponentRef<any>): HTMLElement {
-        return (componentRef.hostView as EmbeddedViewRef<any>).rootNodes[0] as HTMLElement;
-    }
-
     private _showDialog<T>(dialogRef: DmDialogRef<T>, element: Element): void {
         const cfg = dialogRef.config;
 
@@ -202,7 +198,7 @@ export class DmDialogService {
             dialogRef.backdropElement = backdrop;
         }
 
-        const dialog = this._getHostElement(dialogRef.componentRef);
+        const dialog = getHostElement(dialogRef.componentRef);
         if (cfg.dialogClass) {
             this._renderer.addClass(dialog, cfg.dialogClass);
         }
@@ -361,7 +357,7 @@ export class DmDialogService {
         const wbb = dialogRef.wrapperElement.getBoundingClientRect();
         const wdx = wbb.left;
         const wdy = wbb.top;
-        const dialog = this._getHostElement(dialogRef.componentRef);
+        const dialog = getHostElement(dialogRef.componentRef);
         this._renderer.setStyle(dialog, 'pointer-events', 'none');
         const at = Math.round(cfg.animCloseDuration / 2);
         const dbb = dialog.getBoundingClientRect();

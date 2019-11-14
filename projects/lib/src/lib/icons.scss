@@ -12,10 +12,8 @@
 }
 
 .ngx-dmd-icon-font {
-    line-height: .8;
-    font-size: 16px;
+    line-height: .7;
     position: relative;
-    top: 4px;
     &:before {
         font-family: "ngx-dm-dialog";
         font-style: normal;
@@ -28,11 +26,17 @@
     }
     &.ngx-dmd-icon-close:before {
         content: "a";
+        font-size: 17px;
     }
-    &.ngx-dmd-icon-expand:before {
-        content: "b";
+    &.ngx-dmd-icon-expand {
+        height: 18px;
+        &:before {
+            content: "b";
+            font-size: 21px;
+        }
     }
     &.ngx-dmd-icon-shrink:before {
-        content: "c";
+        content: "d";
+        font-size: 19px;
     }
 }

@@ -2,7 +2,7 @@
     Component,
     Input,
     Output,
-    EventEmitter,
+    EventEmitter
 } from '@angular/core';
 import { DmDialogService, DmDialogRef } from '@dimanoid/ngx-dm-dialog';
 
@@ -14,7 +14,7 @@ import { DmDialogService, DmDialogRef } from '@dimanoid/ngx-dm-dialog';
                 <small>Subheader text</small>
             </ng-template>
             <ng-template #content>
-                <div [class.fit]="fill" class="layout vertical flex">
+                <div class="layout vertical flex">
                     <div class="layout mb1"><b class="mr05">text:</b><span>{{ text }}</span></div>
                     <div class="flex"></div>
                 </div>

@@ -36,9 +36,7 @@
                             <span>Backdrop&nbsp;class:</span>
                             <input nz-input [(ngModel)]="config.backdropClass">
                         </div>
-                        <label nz-checkbox class="ml0 mt2" [(ngModel)]="config.draggable">Draggable</label>
-                        <label nz-checkbox class="ml0" [(ngModel)]="config.resizable">Resizable</label>
-                        <div class="layout center">
+                        <div class="layout center mt2">
                             <span>Width:</span>
                             <nz-input-number [(ngModel)]="config.minWidth" nzPlaceHolder="min"></nz-input-number>
                             <span class="mh025">-</span>
@@ -76,6 +74,10 @@
                             <span>Dialog&nbsp;class:</span>
                             <input nz-input [(ngModel)]="config.dialogClass">
                         </div>
+                        <label nz-checkbox class="ml0 mt2" [(ngModel)]="config.dialogDraggable">Draggable</label>
+                        <label nz-checkbox class="ml0" [(ngModel)]="config.dialogResizable">Resizable</label>
+                        <label nz-checkbox class="ml0" [(ngModel)]="config.dialogShowCloseButton">Close button</label>
+                        <label nz-checkbox class="ml0" [(ngModel)]="config.dialogShowMaximizeButton">Maximize button</label>
                         <button class="mt2" nz-button nzType="primary" (click)="showDialog($event, 1)">Show dialog</button>
                         <button class="mb2" nz-button nzType="primary" (click)="showDialog($event, 2)">Show custom dialog</button>
                         <button nz-button nzType="danger" (click)="clearDialogs()">Remove all dialogs</button>
