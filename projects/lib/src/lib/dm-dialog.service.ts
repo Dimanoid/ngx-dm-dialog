@@ -240,38 +240,9 @@ export class DmDialogService {
         else if (cfg.position == 'point') {
             this._renderer.setStyle(dialog, 'left', `${start.x}px`);
             this._renderer.setStyle(dialog, 'top', `${start.y}px`);
-            if (cfg.minWidth) {
-                this._renderer.setStyle(dialog, 'min-width', `${cfg.minWidth}px`);
-            }
-            if (cfg.maxWidth) {
-                this._renderer.setStyle(dialog, 'max-width', (cfg.maxWidth > hw ? hw : cfg.maxWidth) + 'px');
-            }
-            if (cfg.minHeight) {
-                this._renderer.setStyle(dialog, 'min-height', `${cfg.minHeight}px`);
-            }
-            if (cfg.maxHeight) {
-                this._renderer.setStyle(dialog, 'max-height', (cfg.maxHeight > hh ? hh : cfg.maxHeight) + 'px');
-            }
-            end = new Rect(
-                start.x,
-                start.y,
-                start.x + (cfg.minWidth || cfg.maxWidth || 10),
-                start.y + (cfg.minHeight || cfg.maxHeight || 10)
-            );
+            end = new Rect(start.x, start.y, 10, 10);
         }
         else {
-            if (cfg.minWidth) {
-                this._renderer.setStyle(dialog, 'min-width', `${cfg.minWidth}px`);
-            }
-            if (cfg.maxWidth) {
-                this._renderer.setStyle(dialog, 'max-width', (cfg.maxWidth > hw ? hw : cfg.maxWidth) + 'px');
-            }
-            if (cfg.minHeight) {
-                this._renderer.setStyle(dialog, 'min-height', `${cfg.minHeight}px`);
-            }
-            if (cfg.maxHeight) {
-                this._renderer.setStyle(dialog, 'max-height', (cfg.maxHeight > hh ? hh : cfg.maxHeight) + 'px');
-            }
             end = new Rect();
         }
         this._renderer.setStyle(dialog, 'opacity', 0);

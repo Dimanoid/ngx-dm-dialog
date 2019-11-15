@@ -23,7 +23,7 @@ export class AppComponent implements OnInit {
             size?: number
         }
     } = {};
-    config: DmDialogConfig = new DmDialogConfig({ dialogClass: 'layout', backdropOpacity: .2  });
+    config: DmDialogConfig = new DmDialogConfig({ dialogClass: 'layout', backdropOpacity: .2 });
     attachTo: Element | string = '#rightPanel';
 
     constructor(private _ds: DmDialogService) {
@@ -79,11 +79,9 @@ export class AppComponent implements OnInit {
             : this._ds.add(Dialog2Component, { hostElement: this.attachTo, config: this.config });
         const inst = dr.componentRef.instance;
         inst.fill = this.config.position == 'fill';
-        inst.text = 'parent="' + (
-            typeof this.attachTo == 'string'
-                ? this.attachTo
-                : (this.attachTo ? this._getElementSelector(this.attachTo) : '<body>')
-        ) + '"';
+        inst.text = typeof this.attachTo == 'string'
+            ? this.attachTo
+            : (this.attachTo ? this._getElementSelector(this.attachTo) : '<body>');
         inst.closeDialog.subscribe(() => this._ds.remove(dr.id));
     }
 

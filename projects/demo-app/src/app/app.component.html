@@ -8,7 +8,7 @@
                     <div class="dm-panel-left-options layout vertical fit scroll">
                         <b class="fs-l">Dialog options:</b>
                         <div class="layout center">
-                            <span>Attach to:</span>
+                            <span>Attach&nbsp;to:</span>
                             <nz-select style="width: 180px" [(ngModel)]="attachTo">
                                 <nz-option [nzValue]="null" nzLabel="<body>"></nz-option>
                                 <nz-option [nzValue]="rightPanel" nzLabel="#rightPanel"></nz-option>
@@ -24,12 +24,12 @@
                             </nz-select>
                         </div>
                         <div *ngIf="config.position == 'fill' || config.position == 'point'" class="layout center">
-                            <span>Position padding:</span>
+                            <span>Position&nbsp;padding:</span>
                             <nz-input-number [nzMin]="0" [nzMax]="100" [nzStep]="1" [(ngModel)]="config.positionPadding"></nz-input-number>
                         </div>
                         <label class="mt2" nz-checkbox [(ngModel)]="config.backdrop">Show backdrop</label>
                         <div *ngIf="config.backdrop" class="layout center">
-                            <span>Backdrop opacity:</span>
+                            <span>Backdrop&nbsp;opacity:</span>
                             <nz-input-number [nzMin]="0" [nzMax]="1" [nzStep]=".01" [(ngModel)]="config.backdropOpacity"></nz-input-number>
                         </div>
                         <div *ngIf="config.backdrop" class="layout center">
@@ -37,16 +37,16 @@
                             <input nz-input [(ngModel)]="config.backdropClass">
                         </div>
                         <div class="layout center mt2">
-                            <span>Width:</span>
-                            <nz-input-number [(ngModel)]="config.minWidth" nzPlaceHolder="min"></nz-input-number>
+                            <span>Content&nbsp;width:</span>
+                            <nz-input-number [(ngModel)]="config.dialogContentMinWidth" nzPlaceHolder="min"></nz-input-number>
                             <span class="mh025">-</span>
-                            <nz-input-number [(ngModel)]="config.maxWidth" nzPlaceHolder="max"></nz-input-number>
+                            <nz-input-number [(ngModel)]="config.dialogContentMaxWidth" nzPlaceHolder="max"></nz-input-number>
                         </div>
                         <div class="layout center">
-                            <span>Height:</span>
-                            <nz-input-number [(ngModel)]="config.minHeight" nzPlaceHolder="min"></nz-input-number>
+                            <span>Content&nbsp;height:</span>
+                            <nz-input-number [(ngModel)]="config.dialogContentMinHeight" nzPlaceHolder="min"></nz-input-number>
                             <span class="mh025">-</span>
-                            <nz-input-number [(ngModel)]="config.maxHeight" nzPlaceHolder="max"></nz-input-number>
+                            <nz-input-number [(ngModel)]="config.dialogContentMaxHeight" nzPlaceHolder="max"></nz-input-number>
                         </div>
                         <label class="mt2" nz-checkbox [(ngModel)]="config.animOpen">Open animation</label>
                         <div *ngIf="config.animOpen" class="layout center">
@@ -75,9 +75,10 @@
                             <input nz-input [(ngModel)]="config.dialogClass">
                         </div>
                         <label nz-checkbox class="ml0 mt2" [(ngModel)]="config.dialogDraggable">Draggable</label>
-                        <label nz-checkbox class="ml0" [(ngModel)]="config.dialogResizable">Resizable</label>
+                        <!-- <label nz-checkbox class="ml0" [(ngModel)]="config.dialogResizable">Resizable</label> -->
                         <label nz-checkbox class="ml0" [(ngModel)]="config.dialogShowCloseButton">Close button</label>
                         <label nz-checkbox class="ml0" [(ngModel)]="config.dialogShowMaximizeButton">Maximize button</label>
+                        <label nz-checkbox class="ml0" [(ngModel)]="config.dialogKeepInBoundaries">Keep in boundaries</label>
                         <button class="mt2" nz-button nzType="primary" (click)="showDialog($event, 1)">Show dialog</button>
                         <button class="mb2" nz-button nzType="primary" (click)="showDialog($event, 2)">Show custom dialog</button>
                         <button nz-button nzType="danger" (click)="clearDialogs()">Remove all dialogs</button>

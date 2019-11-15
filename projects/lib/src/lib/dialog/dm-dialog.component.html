@@ -1,17 +1,28 @@
-<div class="ngx-dmd-container-inner">
+<div class="ngx-dmd-container-inner" #dci>
     <div class="ngx-dmd-header" (mousedown)="dragStart($event)" (mouseup)="dragEnd($event)">
         <ng-container *ngIf="headerTpl" [ngTemplateOutlet]="headerTpl"></ng-container>
         <ng-template [ngIf]="!headerTpl">{{ titleText }}</ng-template>
         <div class="ngx-dmd-header-buttons">
-            <div *ngIf="config?.dialogShowMaximizeButton" class="ngx-dmd-header-button" (click)="maximized = !maximized">
-                <i class="ngx-dmd-icon-font" [class.ngx-dmd-icon-expand]="!maximized" [class.ngx-dmd-icon-shrink]="maximized"></i>
+            <div *ngIf="config?.dialogShowMaximizeButton"
+                class="ngx-dmd-header-button"
+                (mousedown)="$event.stopPropagation()"
+                (click)="toggleMaximized()">
+                <i class="ngx-dmd-icon-font" [class.ngx-dmd-icon-expand]="!maximizedClass" [class.ngx-dmd-icon-shrink]="maximizedClass"></i>
             </div>
-            <div *ngIf="config?.dialogShowCloseButton" class="ngx-dmd-header-button" (click)="closeDialog()">
+            <div *ngIf="config?.dialogShowCloseButton"
+                class="ngx-dmd-header-button"
+                (mousedown)="$event.stopPropagation()"
+                (click)="closeDialog()">
                 <i class="ngx-dmd-icon-font ngx-dmd-icon-close"></i>
             </div>
         </div>
     </div>
-    <div class="ngx-dmd-content">
+    <div class="ngx-dmd-content"
+        [class.ngx-dmd-content-fill]="maximizedClass || config?.position == 'fill'"
+        [style.min-width.px]="maximizedClass || config?.position == 'fill' ? null : config?.dialogContentMinWidth"
+        [style.max-width.px]="maximizedClass || config?.position == 'fill' ? getMaxWidth() : config?.dialogContentMaxWidth"
+        [style.min-height.px]="maximizedClass || config?.position == 'fill' ? null : config?.dialogContentMinHeight"
+        [style.max-height.px]="maximizedClass || config?.position == 'fill' ? null : config?.dialogContentMaxHeight">
         <ng-container *ngIf="contentTpl" [ngTemplateOutlet]="contentTpl"></ng-container>
     </div>
     <div *ngIf="footerTpl" class="ngx-dmd-footer">

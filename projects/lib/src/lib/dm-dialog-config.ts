@@ -6,10 +6,6 @@ export interface IDmDialogConfig {
     position?: 'center' | 'fill' | 'point';
     positionPadding?: number;
     origin?: Element | Point | Rect;
-    minWidth?: number;
-    maxWidth?: number;
-    minHeight?: number;
-    maxHeight?: number;
     animOpen?: boolean;
     animOpenDuration?: number;
     animOpenFn?: string;
@@ -23,12 +19,18 @@ export interface IDmDialogConfig {
     dialogResizable?: boolean;
     dialogShowCloseButton?: boolean;
     dialogShowMaximizeButton?: boolean;
+    dialogKeepInBoundaries?: boolean;
+    dialogContentMinWidth?: number;
+    dialogContentMaxWidth?: number;
+    dialogContentMinHeight?: number;
+    dialogContentMaxHeight?: number;
 }
 
 const CONFIG_FIELDS = [
-    'backdrop', 'backdropOpacity', 'position', 'positionPadding', 'origin', 'minWidth', 'maxWidth', 'minHeight', 'maxHeight',
+    'backdrop', 'backdropOpacity', 'position', 'positionPadding', 'origin',
     'animOpen', 'animOpenDuration', 'animClose', 'animCloseDuration', 'hostClass', 'backdropClass', 'dialogClass',
-    'dialogDraggable', 'dialogResizable', 'dialogShowCloseButton', 'dialogShowMaximizeButton'
+    'dialogDraggable', 'dialogResizable', 'dialogShowCloseButton', 'dialogShowMaximizeButton', 'dialogKeepInBoundaries',
+    'dialogContentMinWidth', 'dialogContentMaxWidth', 'dialogContentMinHeight', 'dialogContentMaxHeight'
 ];
 
 export class DmDialogConfig implements IDmDialogConfig {
@@ -37,10 +39,6 @@ export class DmDialogConfig implements IDmDialogConfig {
     position: 'center' | 'fill' | 'point' = 'center';
     positionPadding: number = 0;
     origin: Element | Point | Rect;
-    minWidth: number;
-    maxWidth: number;
-    minHeight: number;
-    maxHeight: number;
     animOpen: boolean = true;
     animOpenDuration: number = 600;
     animOpenFn: string = 'cubic-bezier(.82,.01,.26,1)';
@@ -54,6 +52,11 @@ export class DmDialogConfig implements IDmDialogConfig {
     dialogResizable: boolean = false;
     dialogShowCloseButton: boolean = true;
     dialogShowMaximizeButton: boolean = false;
+    dialogKeepInBoundaries: boolean = false;
+    dialogContentMinWidth: number;
+    dialogContentMaxWidth: number;
+    dialogContentMinHeight: number;
+    dialogContentMaxHeight: number;
 
     constructor(json?: IDmDialogConfig) {
         this.apply(json);

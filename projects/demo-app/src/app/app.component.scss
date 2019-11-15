@@ -22,6 +22,15 @@
     }
 }
 
+.ngx-dm-demo-cell {
+    width: 100px;
+    height: 100px;
+    background: #ffe;
+    margin: 1px;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
 .ngx-dm-dialog-wrapper {
     .ngx-dm-dialog-backdrop {
         background: #000;
