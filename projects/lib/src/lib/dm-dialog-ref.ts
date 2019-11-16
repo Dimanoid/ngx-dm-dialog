@@ -1,11 +1,11 @@
-import { IDmDialogConfig } from './dm-dialog-config';
+import { IDmOverlayConfig } from './dm-overlay-config';
 import { ComponentRef } from '@angular/core';
 import { Rect } from './_utils';
 import { Observable } from 'rxjs';
 
 export class DmDialogRef<T> {
     id: number;
-    config: IDmDialogConfig;
+    config: IDmOverlayConfig;
     componentRef: ComponentRef<T>;
     wrapperElement: Element;
     backdropElement: Element;

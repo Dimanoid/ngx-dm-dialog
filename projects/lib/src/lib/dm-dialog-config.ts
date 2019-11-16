@@ -1,62 +1,30 @@
-import { Point, Rect } from './_utils';
-
 export interface IDmDialogConfig {
-    backdrop?: boolean;
-    backdropOpacity?: number;
-    position?: 'center' | 'fill' | 'point';
-    positionPadding?: number;
-    origin?: Element | Point | Rect;
-    animOpen?: boolean;
-    animOpenDuration?: number;
-    animOpenFn?: string;
-    animClose?: boolean;
-    animCloseDuration?: number;
-    animCloseFn?: string;
-    hostClass?: string;
-    backdropClass?: string;
-    dialogClass?: string;
-    dialogDraggable?: boolean;
-    dialogResizable?: boolean;
-    dialogShowCloseButton?: boolean;
-    dialogShowMaximizeButton?: boolean;
-    dialogKeepInBoundaries?: boolean;
-    dialogContentMinWidth?: number;
-    dialogContentMaxWidth?: number;
-    dialogContentMinHeight?: number;
-    dialogContentMaxHeight?: number;
+    draggable?: boolean;
+    resizable?: boolean;
+    showCloseButton?: boolean;
+    showMaximizeButton?: boolean;
+    keepInBoundaries?: boolean;
+    contentMinWidth?: number;
+    contentMaxWidth?: number;
+    contentMinHeight?: number;
+    contentMaxHeight?: number;
 }
 
 const CONFIG_FIELDS = [
-    'backdrop', 'backdropOpacity', 'position', 'positionPadding', 'origin',
-    'animOpen', 'animOpenDuration', 'animClose', 'animCloseDuration', 'hostClass', 'backdropClass', 'dialogClass',
-    'dialogDraggable', 'dialogResizable', 'dialogShowCloseButton', 'dialogShowMaximizeButton', 'dialogKeepInBoundaries',
-    'dialogContentMinWidth', 'dialogContentMaxWidth', 'dialogContentMinHeight', 'dialogContentMaxHeight'
+    'draggable', 'resizable', 'showCloseButton', 'showMaximizeButton', 'keepInBoundaries',
+    'contentMinWidth', 'contentMaxWidth', 'contentMinHeight', 'contentMaxHeight'
 ];
 
 export class DmDialogConfig implements IDmDialogConfig {
-    backdrop: boolean = true;
-    backdropOpacity: number = .5;
-    position: 'center' | 'fill' | 'point' = 'center';
-    positionPadding: number = 0;
-    origin: Element | Point | Rect;
-    animOpen: boolean = true;
-    animOpenDuration: number = 600;
-    animOpenFn: string = 'cubic-bezier(.82,.01,.26,1)';
-    animClose: boolean = true;
-    animCloseDuration: number = 600;
-    animCloseFn: string = 'cubic-bezier(.82,.01,.26,1)';
-    hostClass: string;
-    backdropClass: string;
-    dialogClass: string;
-    dialogDraggable: boolean = true;
-    dialogResizable: boolean = false;
-    dialogShowCloseButton: boolean = true;
-    dialogShowMaximizeButton: boolean = false;
-    dialogKeepInBoundaries: boolean = false;
-    dialogContentMinWidth: number;
-    dialogContentMaxWidth: number;
-    dialogContentMinHeight: number;
-    dialogContentMaxHeight: number;
+    draggable: boolean = true;
+    resizable: boolean = false;
+    showCloseButton: boolean = true;
+    showMaximizeButton: boolean = false;
+    keepInBoundaries: boolean = false;
+    contentMinWidth: number;
+    contentMaxWidth: number;
+    contentMinHeight: number;
+    contentMaxHeight: number;
 
     constructor(json?: IDmDialogConfig) {
         this.apply(json);

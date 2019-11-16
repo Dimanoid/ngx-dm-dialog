@@ -4,11 +4,11 @@
     Output,
     EventEmitter
 } from '@angular/core';
-import { DmDialogService, DmDialogRef } from '@dimanoid/ngx-dm-dialog';
+import { DmDialogService, DmDialogRef, DmDialogConfig } from '@dimanoid/ngx-dm-dialog';
 
 @Component({
     template: `
-        <dm-dialog>
+        <dm-dialog [config]="config">
             <ng-template #header>
                 <div>DmDialog header</div>
                 <small>Subheader text</small>
@@ -44,7 +44,7 @@ import { DmDialogService, DmDialogRef } from '@dimanoid/ngx-dm-dialog';
 })
 export class Dialog1Component {
     @Input() text: string;
-    @Input() fill: boolean;
+    @Input() config: DmDialogConfig;
     @Output() closeDialog: EventEmitter<void> = new EventEmitter();
 
     rows: number[] = [1, 1, 1, 1];

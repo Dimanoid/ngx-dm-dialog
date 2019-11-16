@@ -6,7 +6,7 @@
             <div class="dm-panel-left layout" [style.width.px]="divider['d1'].size">
                 <div class="layout flex relative">
                     <div class="dm-panel-left-options layout vertical fit scroll">
-                        <b class="fs-l">Dialog options:</b>
+                        <b class="fs-l">Overlay options:</b>
                         <div class="layout center">
                             <span>Attach&nbsp;to:</span>
                             <nz-select style="width: 180px" [(ngModel)]="attachTo">
@@ -17,70 +17,71 @@
                         </div>
                         <div class="layout center">
                             <span>Position:</span>
-                            <nz-select style="width: 180px" [(ngModel)]="config.position">
+                            <nz-select style="width: 180px" [(ngModel)]="overlayConfig.position">
                                 <nz-option nzValue="point" nzLabel="point"></nz-option>
                                 <nz-option nzValue="center" nzLabel="center"></nz-option>
                                 <nz-option nzValue="fill" nzLabel="fill"></nz-option>
                             </nz-select>
                         </div>
-                        <div *ngIf="config.position == 'fill' || config.position == 'point'" class="layout center">
+                        <div *ngIf="overlayConfig.position == 'fill' || overlayConfig.position == 'point'" class="layout center">
                             <span>Position&nbsp;padding:</span>
-                            <nz-input-number [nzMin]="0" [nzMax]="100" [nzStep]="1" [(ngModel)]="config.positionPadding"></nz-input-number>
+                            <nz-input-number [nzMin]="0" [nzMax]="100" [nzStep]="1" [(ngModel)]="overlayConfig.positionPadding"></nz-input-number>
                         </div>
-                        <label class="mt2" nz-checkbox [(ngModel)]="config.backdrop">Show backdrop</label>
-                        <div *ngIf="config.backdrop" class="layout center">
+                        <label class="mt2" nz-checkbox [(ngModel)]="overlayConfig.backdrop">Show backdrop</label>
+                        <div *ngIf="overlayConfig.backdrop" class="layout center">
                             <span>Backdrop&nbsp;opacity:</span>
-                            <nz-input-number [nzMin]="0" [nzMax]="1" [nzStep]=".01" [(ngModel)]="config.backdropOpacity"></nz-input-number>
+                            <nz-input-number [nzMin]="0" [nzMax]="1" [nzStep]=".01" [(ngModel)]="overlayConfig.backdropOpacity"></nz-input-number>
                         </div>
-                        <div *ngIf="config.backdrop" class="layout center">
+                        <div *ngIf="overlayConfig.backdrop" class="layout center">
                             <span>Backdrop&nbsp;class:</span>
-                            <input nz-input [(ngModel)]="config.backdropClass">
+                            <input nz-input [(ngModel)]="overlayConfig.backdropClass">
                         </div>
-                        <div class="layout center mt2">
-                            <span>Content&nbsp;width:</span>
-                            <nz-input-number [(ngModel)]="config.dialogContentMinWidth" nzPlaceHolder="min"></nz-input-number>
-                            <span class="mh025">-</span>
-                            <nz-input-number [(ngModel)]="config.dialogContentMaxWidth" nzPlaceHolder="max"></nz-input-number>
-                        </div>
-                        <div class="layout center">
-                            <span>Content&nbsp;height:</span>
-                            <nz-input-number [(ngModel)]="config.dialogContentMinHeight" nzPlaceHolder="min"></nz-input-number>
-                            <span class="mh025">-</span>
-                            <nz-input-number [(ngModel)]="config.dialogContentMaxHeight" nzPlaceHolder="max"></nz-input-number>
-                        </div>
-                        <label class="mt2" nz-checkbox [(ngModel)]="config.animOpen">Open animation</label>
-                        <div *ngIf="config.animOpen" class="layout center">
+                        <label class="mt2" nz-checkbox [(ngModel)]="overlayConfig.animOpen">Open animation</label>
+                        <div *ngIf="overlayConfig.animOpen" class="layout center">
                             <span>Duration:</span>
-                            <nz-input-number [nzMin]="0" [(ngModel)]="config.animOpenDuration" nzPkaceholder="ms"></nz-input-number>
+                            <nz-input-number [nzMin]="0" [(ngModel)]="overlayConfig.animOpenDuration" nzPkaceholder="ms"></nz-input-number>
                         </div>
-                        <div *ngIf="config.animOpen" class="layout center">
+                        <div *ngIf="overlayConfig.animOpen" class="layout center">
                             <span>Function:</span>
-                            <input nz-input [(ngModel)]="config.animOpenFn" nzPkaceholder="linear">
+                            <input nz-input [(ngModel)]="overlayConfig.animOpenFn" nzPkaceholder="linear">
                         </div>
-                        <label class="mt2 ml0" nz-checkbox [(ngModel)]="config.animClose">Close animation</label>
-                        <div *ngIf="config.animClose" class="layout center">
+                        <label class="mt2 ml0" nz-checkbox [(ngModel)]="overlayConfig.animClose">Close animation</label>
+                        <div *ngIf="overlayConfig.animClose" class="layout center">
                             <span>Duration:</span>
-                            <nz-input-number [nzMin]="0" [(ngModel)]="config.animCloseDuration" nzPkaceholder="ms"></nz-input-number>
+                            <nz-input-number [nzMin]="0" [(ngModel)]="overlayConfig.animCloseDuration" nzPkaceholder="ms"></nz-input-number>
                         </div>
-                        <div *ngIf="config.animClose" class="layout center">
+                        <div *ngIf="overlayConfig.animClose" class="layout center">
                             <span>Function:</span>
-                            <input nz-input [(ngModel)]="config.animCloseFn" nzPkaceholder="linear">
+                            <input nz-input [(ngModel)]="overlayConfig.animCloseFn" nzPkaceholder="linear">
                         </div>
                         <div class="layout center mt2">
                             <span>Host&nbsp;class:</span>
-                            <input nz-input [(ngModel)]="config.hostClass">
+                            <input nz-input [(ngModel)]="overlayConfig.hostClass">
                         </div>
                         <div class="layout center">
                             <span>Dialog&nbsp;class:</span>
-                            <input nz-input [(ngModel)]="config.dialogClass">
+                            <input nz-input [(ngModel)]="overlayConfig.dialogClass">
                         </div>
-                        <label nz-checkbox class="ml0 mt2" [(ngModel)]="config.dialogDraggable">Draggable</label>
-                        <!-- <label nz-checkbox class="ml0" [(ngModel)]="config.dialogResizable">Resizable</label> -->
-                        <label nz-checkbox class="ml0" [(ngModel)]="config.dialogShowCloseButton">Close button</label>
-                        <label nz-checkbox class="ml0" [(ngModel)]="config.dialogShowMaximizeButton">Maximize button</label>
-                        <label nz-checkbox class="ml0" [(ngModel)]="config.dialogKeepInBoundaries">Keep in boundaries</label>
+                        <button class="mb2" nz-button nzType="primary" (click)="showDialog($event, 2)">Show custom overlay</button>
+                        <b class="fs-l">Dialog options:</b>
+                        <div class="layout center">
+                            <span>Content&nbsp;width:</span>
+                            <nz-input-number [(ngModel)]="dialogConfig.contentMinWidth" nzPlaceHolder="min"></nz-input-number>
+                            <span class="mh025">-</span>
+                            <nz-input-number [(ngModel)]="dialogConfig.contentMaxWidth" nzPlaceHolder="max"></nz-input-number>
+                        </div>
+                        <div class="layout center">
+                            <span>Content&nbsp;height:</span>
+                            <nz-input-number [(ngModel)]="dialogConfig.contentMinHeight" nzPlaceHolder="min"></nz-input-number>
+                            <span class="mh025">-</span>
+                            <nz-input-number [(ngModel)]="dialogConfig.contentMaxHeight" nzPlaceHolder="max"></nz-input-number>
+                        </div>
+                        <label nz-checkbox class="ml0" [(ngModel)]="dialogConfig.draggable">Draggable</label>
+                        <!-- <label nz-checkbox class="ml0" [(ngModel)]="dialogConfig.resizable">Resizable</label> -->
+                        <label nz-checkbox class="ml0" [(ngModel)]="dialogConfig.showCloseButton">Close button</label>
+                        <label nz-checkbox class="ml0" [(ngModel)]="dialogConfig.showMaximizeButton">Maximize button</label>
+                        <label nz-checkbox class="ml0" [(ngModel)]="dialogConfig.keepInBoundaries">Keep in boundaries</label>
                         <button class="mt2" nz-button nzType="primary" (click)="showDialog($event, 1)">Show dialog</button>
-                        <button class="mb2" nz-button nzType="primary" (click)="showDialog($event, 2)">Show custom dialog</button>
                         <button nz-button nzType="danger" (click)="clearDialogs()">Remove all dialogs</button>
                     </div>
                 </div>

@@ -1,4 +1,5 @@
 export * from './lib/dm-dialog-ref';
+export * from './lib/dm-overlay-config';
 export * from './lib/dm-dialog-config';
 export * from './lib/dm-dialog.module';
 export * from './lib/dm-dialog.service';

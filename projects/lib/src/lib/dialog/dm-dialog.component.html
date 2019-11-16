@@ -3,13 +3,13 @@
         <ng-container *ngIf="headerTpl" [ngTemplateOutlet]="headerTpl"></ng-container>
         <ng-template [ngIf]="!headerTpl">{{ titleText }}</ng-template>
         <div class="ngx-dmd-header-buttons">
-            <div *ngIf="config?.dialogShowMaximizeButton"
+            <div *ngIf="config?.showMaximizeButton"
                 class="ngx-dmd-header-button"
                 (mousedown)="$event.stopPropagation()"
                 (click)="toggleMaximized()">
                 <i class="ngx-dmd-icon-font" [class.ngx-dmd-icon-expand]="!maximizedClass" [class.ngx-dmd-icon-shrink]="maximizedClass"></i>
             </div>
-            <div *ngIf="config?.dialogShowCloseButton"
+            <div *ngIf="config?.showCloseButton"
                 class="ngx-dmd-header-button"
                 (mousedown)="$event.stopPropagation()"
                 (click)="closeDialog()">
@@ -18,11 +18,11 @@
         </div>
     </div>
     <div class="ngx-dmd-content"
-        [class.ngx-dmd-content-fill]="maximizedClass || config?.position == 'fill'"
-        [style.min-width.px]="maximizedClass || config?.position == 'fill' ? null : config?.dialogContentMinWidth"
-        [style.max-width.px]="maximizedClass || config?.position == 'fill' ? getMaxWidth() : config?.dialogContentMaxWidth"
-        [style.min-height.px]="maximizedClass || config?.position == 'fill' ? null : config?.dialogContentMinHeight"
-        [style.max-height.px]="maximizedClass || config?.position == 'fill' ? null : config?.dialogContentMaxHeight">
+        [class.ngx-dmd-content-fill]="maximizedClass || overlayConfig?.position == 'fill'"
+        [style.min-width.px]="maximizedClass || overlayConfig?.position == 'fill' ? null : config?.contentMinWidth"
+        [style.max-width.px]="maximizedClass || overlayConfig?.position == 'fill' ? getMaxWidth() : config?.contentMaxWidth"
+        [style.min-height.px]="maximizedClass || overlayConfig?.position == 'fill' ? null : config?.contentMinHeight"
+        [style.max-height.px]="maximizedClass || overlayConfig?.position == 'fill' ? null : config?.contentMaxHeight">
         <ng-container *ngIf="contentTpl" [ngTemplateOutlet]="contentTpl"></ng-container>
     </div>
     <div *ngIf="footerTpl" class="ngx-dmd-footer">

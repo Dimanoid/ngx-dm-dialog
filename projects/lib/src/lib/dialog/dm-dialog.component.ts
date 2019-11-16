@@ -7,7 +7,8 @@ import { InputBoolean, Point, getHostElement } from '../_utils';
 
 import { DmDialogService } from '../dm-dialog.service';
 import { DmDialogRef } from '../dm-dialog-ref';
-import { IDmDialogConfig } from '../dm-dialog-config';
+import { IDmDialogConfig, DmDialogConfig } from '../dm-dialog-config';
+import { IDmOverlayConfig } from '../dm-overlay-config';
 
 @Component({
     selector: 'dm-dialog',
@@ -18,6 +19,15 @@ import { IDmDialogConfig } from '../dm-dialog-config';
 })
 export class DmDialogComponent implements OnInit, AfterViewInit, OnChanges, AfterContentInit {
     @Input() titleText: string;
+    private _config: IDmDialogConfig = new DmDialogConfig();
+    @Input()
+    set config(v: IDmDialogConfig) {
+        this._config = new DmDialogConfig(v);
+        this.draggable = this.config.draggable && this._dr.config.position != 'fill';
+    }
+    get config(): IDmDialogConfig {
+        return this._config;
+    }
 
     @ContentChild('header', { static: false }) headerTpl: TemplateRef<any>;
     @ContentChild('content', { static: false }) contentTpl: TemplateRef<any>;
@@ -34,17 +44,17 @@ export class DmDialogComponent implements OnInit, AfterViewInit, OnChanges, Afte
     @HostBinding('class.ngx-dmd-dragging') dragging: boolean = false;
     @HostBinding('class.ngx-dmd-draggable') draggable: boolean = false;
 
-    config: IDmDialogConfig;
     dragStartPoint: Point;
     dialogDragStartPoint: Point;
+    overlayConfig: IDmOverlayConfig;
 
     constructor(
         private _renderer: Renderer2,
         private _ds: DmDialogService,
         private _dr: DmDialogRef<DmDialogComponent>
     ) {
-        this.config = this._dr.config;
-        this.draggable = this.config.dialogDraggable && this.config.position != 'fill';
+        this.draggable = this.config.draggable && this._dr.config.position != 'fill';
+        this.overlayConfig = this._dr.config;
     }
 
     ngOnInit() {
@@ -64,7 +74,7 @@ export class DmDialogComponent implements OnInit, AfterViewInit, OnChanges, Afte
     }
 
     dragStart(e: MouseEvent) {
-        if (!this._dr.config.dialogDraggable || this._dr.config.position == 'fill' || e.buttons != 1 || this.maximizedClass) {
+        if (!this.config.draggable || this._dr.config.position == 'fill' || e.buttons != 1 || this.maximizedClass) {
             return;
         }
         this.dragStartPoint = new Point(e.clientX, e.clientY);
@@ -98,7 +108,7 @@ export class DmDialogComponent implements OnInit, AfterViewInit, OnChanges, Afte
 
     private _checkCoordinate(xy: number, d: number, w: number, y = false): number {
         if (xy < 0) {
-            if (this.config.dialogKeepInBoundaries || y) {
+            if (this.config.keepInBoundaries || y) {
                 return 0;
             }
             else if (xy + d - 40 < 0) {
@@ -106,7 +116,7 @@ export class DmDialogComponent implements OnInit, AfterViewInit, OnChanges, Afte
             }
         }
         else if (xy + d > w) {
-            if (this.config.dialogKeepInBoundaries) {
+            if (this.config.keepInBoundaries) {
                 return w - d;
             }
             else if (xy + 40 > w) {
@@ -119,13 +129,13 @@ export class DmDialogComponent implements OnInit, AfterViewInit, OnChanges, Afte
     toggleMaximized() {
         this.maximized = !this.maximizedClass;
         this.maximizedChange.emit(this.maximizedClass);
-        this.draggable = this.maximizedClass ? false : this.config.dialogDraggable && this.config.position != 'fill';
+        this.draggable = this.maximizedClass ? false : this.config.draggable && this._dr.config.position != 'fill';
     }
 
     getMaxWidth() {
         return this.maximizedClass
             ? document.body.clientWidth
-            : this._dr.wrapperElement.getBoundingClientRect().width - this.config.positionPadding * 2;
+            : this._dr.wrapperElement.getBoundingClientRect().width - this._dr.config.positionPadding * 2;
     }
 
 }

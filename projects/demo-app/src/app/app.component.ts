@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { Point } from './dm-divider.module';
-import { DmDialogService, DmDialogConfig } from '@dimanoid/ngx-dm-dialog';
+import { DmDialogService, DmDialogConfig, DmOverlayConfig } from '@dimanoid/ngx-dm-dialog';
 import { Dialog1Component } from './dialog1.component';
 import { Dialog2Component } from './dialog2.component';
 
@@ -23,7 +23,8 @@ export class AppComponent implements OnInit {
             size?: number
         }
     } = {};
-    config: DmDialogConfig = new DmDialogConfig({ dialogClass: 'layout', backdropOpacity: .2 });
+    overlayConfig: DmOverlayConfig = new DmOverlayConfig({ dialogClass: 'layout', backdropOpacity: .2 });
+    dialogConfig: DmDialogConfig = new DmDialogConfig();
     attachTo: Element | string = '#rightPanel';
 
     constructor(private _ds: DmDialogService) {
@@ -73,12 +74,17 @@ export class AppComponent implements OnInit {
     }
 
     showDialog(e: MouseEvent, n: number) {
-        this.config.origin = e.target as HTMLElement;
+        this.overlayConfig.origin = e.target as HTMLElement;
         const dr = n == 1
-            ? this._ds.add(Dialog1Component, { hostElement: this.attachTo, config: this.config })
-            : this._ds.add(Dialog2Component, { hostElement: this.attachTo, config: this.config });
+            ? this._ds.add(Dialog1Component, { hostElement: this.attachTo, config: this.overlayConfig })
+            : this._ds.add(Dialog2Component, { hostElement: this.attachTo, config: this.overlayConfig });
         const inst = dr.componentRef.instance;
-        inst.fill = this.config.position == 'fill';
+        if (inst instanceof Dialog1Component) {
+            inst.config = this.dialogConfig;
+        }
+        else if (inst instanceof Dialog2Component) {
+            inst.fill = this.overlayConfig.position == 'fill';
+        }
         inst.text = typeof this.attachTo == 'string'
             ? this.attachTo
             : (this.attachTo ? this._getElementSelector(this.attachTo) : '<body>');

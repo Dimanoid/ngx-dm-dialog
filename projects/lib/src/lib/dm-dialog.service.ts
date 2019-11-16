@@ -13,7 +13,7 @@ import {
 import { DOCUMENT } from '@angular/common';
 
 import { DmDialogRef } from './dm-dialog-ref';
-import { DmDialogConfig, IDmDialogConfig } from './dm-dialog-config';
+import { DmOverlayConfig, IDmOverlayConfig } from './dm-overlay-config';
 import { DmTemplateWrapperComponent } from './template-wrapper.component';
 import { Point, Rect, getHostElement } from './_utils';
 import { Observable } from 'rxjs';
@@ -26,7 +26,7 @@ export type ComponentType<T> = new (...args: any[]) => T;
 export class DmDialogService {
     private _lastId = 1;
     private _dialogs: { [id: string]: DmDialogRef<any> } = {};
-    private _globalConfig: DmDialogConfig = new DmDialogConfig();
+    private _globalConfig: DmOverlayConfig = new DmOverlayConfig();
     private _renderer: Renderer2;
 
     constructor(
@@ -42,7 +42,7 @@ export class DmDialogService {
     add<T>(
         dialog: ComponentType<T> | ComponentRef<T> | TemplateRef<T>,
         options?: {
-            config?: IDmDialogConfig,
+            config?: IDmOverlayConfig,
             templateContext?: any,
             hostElement?: Element | string,
             data?: any,
@@ -57,7 +57,7 @@ export class DmDialogService {
 
         const dialogRef = new DmDialogRef<T>();
         dialogRef.id = this._lastId++;
-        dialogRef.config = new DmDialogConfig(this._globalConfig).apply(options.config);
+        dialogRef.config = new DmOverlayConfig(this._globalConfig).apply(options.config);
         dialogRef.data = options.data;
         dialogRef.afterOpen = options.afterOpen;
         dialogRef.canClose = options.canClose;
@@ -134,12 +134,12 @@ export class DmDialogService {
          });
     }
 
-    getGlobalConfig(): DmDialogConfig {
-        return new DmDialogConfig(this._globalConfig);
+    getGlobalConfig(): DmOverlayConfig {
+        return new DmOverlayConfig(this._globalConfig);
     }
 
-    setGlobalConfig(config: DmDialogConfig | object): void {
-        this._globalConfig = new DmDialogConfig(config);
+    setGlobalConfig(config: DmOverlayConfig | object): void {
+        this._globalConfig = new DmOverlayConfig(config);
     }
 
     private _showDialog<T>(dialogRef: DmDialogRef<T>, element: Element): void {
