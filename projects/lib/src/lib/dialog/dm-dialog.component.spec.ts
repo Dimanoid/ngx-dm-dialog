@@ -4,12 +4,12 @@ import { SpectatorHost, createHostFactory } from '@ngneat/spectator/jest';
 import { DmDialogService } from '../dm-dialog.service';
 import { DmDialogComponent } from './dm-dialog.component';
 import { DmDialogRef } from '../dm-dialog-ref';
-import { DmDialogConfig } from '../dm-dialog-config';
+import { DmOverlayConfig } from '../dm-overlay-config';
 
 describe('DmDialogComponent', () => {
     let spectator: SpectatorHost<DmDialogComponent>;
     const dialogRef = new DmDialogRef<DmDialogComponent>();
-    dialogRef.config = new DmDialogConfig();
+    dialogRef.config = new DmOverlayConfig();
     const createHost = createHostFactory({
         component: DmDialogComponent,
         providers: [
