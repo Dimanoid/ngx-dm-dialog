@@ -1,5 +1,9 @@
 <div class="ngx-dmd-container-inner" #dci>
-    <div class="ngx-dmd-header" (mousedown)="dragStart($event)" (mouseup)="dragEnd($event)">
+    <div class="ngx-dmd-header"
+        [style.min-width.px]="maximizedClass || overlayConfig?.position == 'fill' ? null : config?.contentMinWidth"
+        [style.max-width.px]="maximizedClass || overlayConfig?.position == 'fill' ? getMaxWidth() : config?.contentMaxWidth"
+        (mousedown)="dragStart($event)"
+        (mouseup)="dragEnd($event)">
         <ng-container *ngIf="headerTpl" [ngTemplateOutlet]="headerTpl"></ng-container>
         <ng-template [ngIf]="!headerTpl">{{ titleText }}</ng-template>
         <div class="ngx-dmd-header-buttons">
@@ -25,7 +29,9 @@
         [style.max-height.px]="maximizedClass || overlayConfig?.position == 'fill' ? null : config?.contentMaxHeight">
         <ng-container *ngIf="contentTpl" [ngTemplateOutlet]="contentTpl"></ng-container>
     </div>
-    <div *ngIf="footerTpl" class="ngx-dmd-footer">
+    <div *ngIf="footerTpl" class="ngx-dmd-footer"
+        [style.min-width.px]="maximizedClass || overlayConfig?.position == 'fill' ? null : config?.contentMinWidth"
+        [style.max-width.px]="maximizedClass || overlayConfig?.position == 'fill' ? getMaxWidth() : config?.contentMaxWidth">
         <ng-container [ngTemplateOutlet]="footerTpl"></ng-container>
     </div>
 </div>
