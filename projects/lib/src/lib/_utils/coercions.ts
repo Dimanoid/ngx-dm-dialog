@@ -1,7 +1,16 @@
-import { coerceBooleanProperty, coerceCssPixelValue, _isNumberValue } from '@angular/cdk/coercion';
+function _isNumberValue(value: any): boolean {
+    return !isNaN(parseFloat(value as any)) && !isNaN(Number(value));
+}
+
+function coerceCssPixelValue(value: any): string {
+    if (value == null) {
+      return '';
+    }
+    return typeof value === 'string' ? value : `${value}px`;
+}
 
 export function toBoolean(value: boolean | string): boolean {
-    return coerceBooleanProperty(value);
+    return value != null && `${value}` !== 'false';
 }
 
 export function toNumber(value: number | string): number;
