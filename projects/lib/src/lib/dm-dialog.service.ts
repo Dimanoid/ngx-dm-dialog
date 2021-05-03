@@ -171,8 +171,8 @@ export class DmDialogService {
                 this._renderer.addClass(wrapper, cfg.hostClass);
             }
             this._renderer.appendChild(element, wrapper);
-            dialogRef.wrapperElement = wrapper;
         }
+        dialogRef.wrapperElement = wrapper;
 
         let animbox: HTMLDivElement;
         if (cfg.animOpen) {
