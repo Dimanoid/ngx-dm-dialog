@@ -120,7 +120,19 @@ export class DmDialogService {
     private _remove<T>(dialogRef: DmDialogRef<T>) {
         this._appRef.detachView(dialogRef.componentRef.hostView);
         dialogRef.componentRef.destroy();
-        this._renderer.removeChild(this._renderer.parentNode(dialogRef.wrapperElement), dialogRef.wrapperElement);
+        if (dialogRef.config.wrapper) {
+            this._renderer.removeChild(this._renderer.parentNode(dialogRef.wrapperElement), dialogRef.wrapperElement);
+        }
+        else {
+            const dialog = getHostElement(dialogRef.componentRef);
+            this._renderer.removeChild(this._renderer.parentNode(dialog), dialog);
+            if (dialogRef.animboxElement) {
+                this._renderer.removeChild(this._renderer.parentNode(dialogRef.animboxElement), dialogRef.animboxElement);
+            }
+            if (dialogRef.backdropElement) {
+                this._renderer.removeChild(this._renderer.parentNode(dialogRef.backdropElement), dialogRef.backdropElement);
+            }
+        }
         if (dialogRef.afterClose) {
             dialogRef.afterClose(dialogRef);
         }
@@ -145,22 +157,22 @@ export class DmDialogService {
     private _showDialog<T>(dialogRef: DmDialogRef<T>, element: Element): void {
         const cfg = dialogRef.config;
 
-        const wrapper: HTMLDivElement = this._renderer.createElement('div');
-        this._renderer.setStyle(wrapper, 'position', 'absolute');
-        this._renderer.setStyle(wrapper, 'top', 0);
-        this._renderer.setStyle(wrapper, 'right', 0);
-        this._renderer.setStyle(wrapper, 'bottom', 0);
-        this._renderer.setStyle(wrapper, 'left', 0);
-        this._renderer.setStyle(wrapper, 'overflow', 'hidden');
-        this._renderer.addClass(wrapper, 'ngx-dm-dialog-wrapper');
-        if (cfg.hostClass) {
-            this._renderer.addClass(wrapper, cfg.hostClass);
+        let wrapper: HTMLDivElement;
+        if (cfg.wrapper) {
+            wrapper = this._renderer.createElement('div');
+            this._renderer.setStyle(wrapper, 'position', 'absolute');
+            this._renderer.setStyle(wrapper, 'top', 0);
+            this._renderer.setStyle(wrapper, 'right', 0);
+            this._renderer.setStyle(wrapper, 'bottom', 0);
+            this._renderer.setStyle(wrapper, 'left', 0);
+            this._renderer.setStyle(wrapper, 'overflow', 'hidden');
+            this._renderer.addClass(wrapper, 'ngx-dm-dialog-wrapper');
+            if (cfg.hostClass) {
+                this._renderer.addClass(wrapper, cfg.hostClass);
+            }
+            this._renderer.appendChild(element, wrapper);
+            dialogRef.wrapperElement = wrapper;
         }
-        this._renderer.appendChild(element, wrapper);
-        dialogRef.wrapperElement = wrapper;
-        // const wbb = wrapper.getBoundingClientRect();
-        // const wdx = wbb.left;
-        // const wdy = wbb.top;
 
         let animbox: HTMLDivElement;
         if (cfg.animOpen) {
@@ -172,7 +184,7 @@ export class DmDialogService {
             this._renderer.setStyle(animbox, 'height', 0);
             this._renderer.setStyle(animbox, 'opacity', 0);
             this._renderer.addClass(animbox, 'ngx-dm-dialog-animbox');
-            this._renderer.appendChild(wrapper, animbox);
+            this._renderer.appendChild(cfg.wrapper ? wrapper : element, animbox);
             dialogRef.animboxElement = animbox;
         }
 
@@ -194,7 +206,7 @@ export class DmDialogService {
             if (cfg.animOpen) {
                 this._renderer.setStyle(backdrop, 'transition', `opacity ${at}ms ${cfg.animOpenFn}`);
             }
-            this._renderer.appendChild(wrapper, backdrop);
+            this._renderer.appendChild(cfg.wrapper ? wrapper : element, backdrop);
             dialogRef.backdropElement = backdrop;
         }
 
@@ -246,7 +258,7 @@ export class DmDialogService {
             end = new Rect();
         }
         this._renderer.setStyle(dialog, 'opacity', 0);
-        this._renderer.appendChild(wrapper, dialog);
+        this._renderer.appendChild(cfg.wrapper ? wrapper : element, dialog);
         setTimeout(() => { // TODO: find out how to correctly detect when view is fully rendered
             const dbb = dialog.getBoundingClientRect();
             end.x = Math.round((hw - dbb.width) / 2);

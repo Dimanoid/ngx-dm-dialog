@@ -1,6 +1,7 @@
 import { Point, Rect } from './_utils';
 
 export interface IDmOverlayConfig {
+    wrapper?: boolean;
     backdrop?: boolean;
     backdropOpacity?: number;
     position?: 'center' | 'fill' | 'point';
@@ -23,6 +24,7 @@ const CONFIG_FIELDS = [
 ];
 
 export class DmOverlayConfig implements IDmOverlayConfig {
+    wrapper: boolean = true;
     backdrop: boolean = true;
     backdropOpacity: number = .5;
     position: 'center' | 'fill' | 'point' = 'center';
