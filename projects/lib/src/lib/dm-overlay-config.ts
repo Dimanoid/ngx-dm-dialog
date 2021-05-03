@@ -19,8 +19,9 @@ export interface IDmOverlayConfig {
 }
 
 const CONFIG_FIELDS = [
-    'backdrop', 'backdropOpacity', 'position', 'positionPadding', 'origin',
-    'animOpen', 'animOpenDuration', 'animClose', 'animCloseDuration', 'hostClass', 'backdropClass', 'dialogClass'
+    'wrapper', 'backdrop', 'backdropOpacity', 'position', 'positionPadding', 'origin',
+    'animOpen', 'animOpenDuration', 'animOpenFn', 'animClose', 'animCloseDuration',
+    'animCloseFn', 'hostClass', 'backdropClass', 'dialogClass'
 ];
 
 export class DmOverlayConfig implements IDmOverlayConfig {
