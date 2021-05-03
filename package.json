@@ -1,6 +1,6 @@
 {
     "name": "@dimanoid/ngx-dm-dialog",
-    "version": "0.1.7",
+    "version": "0.1.8",
     "scripts": {
         "build": "ng build lib",
         "build:demo": "ng build --aot --prod --base-href /ngx-dm-dialog/ demo-app",
