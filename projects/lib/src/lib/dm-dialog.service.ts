@@ -157,7 +157,7 @@ export class DmDialogService {
     private _showDialog<T>(dialogRef: DmDialogRef<T>, element: Element): void {
         const cfg = dialogRef.config;
 
-        let wrapper: HTMLDivElement;
+        let wrapper: Element = element;
         if (cfg.wrapper) {
             wrapper = this._renderer.createElement('div');
             this._renderer.setStyle(wrapper, 'position', 'absolute');
@@ -184,7 +184,7 @@ export class DmDialogService {
             this._renderer.setStyle(animbox, 'height', 0);
             this._renderer.setStyle(animbox, 'opacity', 0);
             this._renderer.addClass(animbox, 'ngx-dm-dialog-animbox');
-            this._renderer.appendChild(cfg.wrapper ? wrapper : element, animbox);
+            this._renderer.appendChild(wrapper, animbox);
             dialogRef.animboxElement = animbox;
         }
 
@@ -206,7 +206,7 @@ export class DmDialogService {
             if (cfg.animOpen) {
                 this._renderer.setStyle(backdrop, 'transition', `opacity ${at}ms ${cfg.animOpenFn}`);
             }
-            this._renderer.appendChild(cfg.wrapper ? wrapper : element, backdrop);
+            this._renderer.appendChild(wrapper, backdrop);
             dialogRef.backdropElement = backdrop;
         }
 
@@ -258,7 +258,7 @@ export class DmDialogService {
             end = new Rect();
         }
         this._renderer.setStyle(dialog, 'opacity', 0);
-        this._renderer.appendChild(cfg.wrapper ? wrapper : element, dialog);
+        this._renderer.appendChild(wrapper, dialog);
         setTimeout(() => { // TODO: find out how to correctly detect when view is fully rendered
             const dbb = dialog.getBoundingClientRect();
             end.x = Math.round((hw - dbb.width) / 2);
