@@ -98,48 +98,48 @@
         }
         [class^="ngx-dmd-border-"] {
             position: absolute;
-            .ngx-dmd-border-t {
+            &.ngx-dmd-border-t {
                 top: 0;
                 height: 2px;
                 cursor: n-resize;
             }
-            .ngx-dmd-border-l {
+            &.ngx-dmd-border-l {
                 left: 0;
                 width: 2px;
                 cursor: w-resize;
             }
-            .ngx-dmd-border-b {
+            &.ngx-dmd-border-b {
                 right: 0;
                 width: 2px;
                 cursor: e-resize;
             }
-            .ngx-dmd-border-r {
+            &.ngx-dmd-border-r {
                 bottom: 0;
                 height: 2px;
                 cursor: s-resize;
             }
-            .ngx-dmd-border-tr {
+            &.ngx-dmd-border-tr {
                 top: 0;
                 right: 0;
                 width: 2px;
                 height: 2px;
                 cursor: ne-resize;
             }
-            .ngx-dmd-border-tl {
+            &.ngx-dmd-border-tl {
                 top: 0;
                 left: 0;
                 width: 2px;
                 height: 2px;
                 cursor: nw-resize;
             }
-            .ngx-dmd-border-br {
+            &.ngx-dmd-border-br {
                 right: 0;
                 bottom: 0;
                 width: 2px;
                 height: 2px;
                 cursor: se-resize;
             }
-            .ngx-dmd-border-bl {
+            &.ngx-dmd-border-bl {
                 bottom: 0;
                 left: 0;
                 width: 2px;
