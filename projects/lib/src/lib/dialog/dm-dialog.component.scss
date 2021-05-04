@@ -99,51 +99,59 @@
         [class^="ngx-dmd-border-"] {
             position: absolute;
             &.ngx-dmd-border-t {
-                top: 0;
-                height: 2px;
+                top: -6px;
+                left: 0;
+                right: 0;
+                height: 5px;
                 cursor: n-resize;
             }
             &.ngx-dmd-border-l {
+                top: 0;
                 left: 0;
-                width: 2px;
+                bottom: 0;
+                width: 5px;
                 cursor: w-resize;
             }
             &.ngx-dmd-border-b {
+                left: 0;
                 right: 0;
-                width: 2px;
+                bottom: 0;
+                width: 5px;
                 cursor: e-resize;
             }
             &.ngx-dmd-border-r {
+                top: 0;
+                right: 0;
                 bottom: 0;
-                height: 2px;
+                height: 5px;
                 cursor: s-resize;
             }
             &.ngx-dmd-border-tr {
                 top: 0;
                 right: 0;
-                width: 2px;
-                height: 2px;
+                width: 5px;
+                height: 5px;
                 cursor: ne-resize;
             }
             &.ngx-dmd-border-tl {
                 top: 0;
                 left: 0;
-                width: 2px;
-                height: 2px;
+                width: 5px;
+                height: 5px;
                 cursor: nw-resize;
             }
             &.ngx-dmd-border-br {
                 right: 0;
                 bottom: 0;
-                width: 2px;
-                height: 2px;
+                width: 5px;
+                height: 5px;
                 cursor: se-resize;
             }
             &.ngx-dmd-border-bl {
                 bottom: 0;
                 left: 0;
-                width: 2px;
-                height: 2px;
+                width: 5px;
+                height: 5px;
                 cursor: sw-resize;
             }
         }
