@@ -81,11 +81,12 @@ export class DmDialogComponent implements OnInit, AfterViewInit, OnChanges, Afte
         if ((resize && this.config.resizable) || this.config.draggable) {
             this.dragStartPoint = new Point(e.clientX, e.clientY);
             const dialog = getHostElement(this.dialogRef.componentRef);
+            const dbb = dialog.getBoundingClientRect();
             this.dialogDragStartPoint = new Rect(
                 parseInt(dialog.style.left, 10),
                 parseInt(dialog.style.top, 10),
-                parseInt(dialog.style.width, 10),
-                parseInt(dialog.style.height, 10),
+                dbb.width,
+                dbb.height,
             );
             if (resize) {
                 this.resize = resize;
