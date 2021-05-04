@@ -28,18 +28,18 @@
         [style.min-height.px]="maximizedClass || overlayConfig?.position == 'fill' ? null : config?.contentMinHeight"
         [style.max-height.px]="maximizedClass || overlayConfig?.position == 'fill' ? null : config?.contentMaxHeight">
         <ng-container *ngIf="contentTpl" [ngTemplateOutlet]="contentTpl"></ng-container>
-        <div class="ngx-dmd-content-border ngx-dmd-n-resize"></div>
-        <div class="ngx-dmd-content-border ngx-dmd-w-resize"></div>
-        <div class="ngx-dmd-content-border ngx-dmd-e-resize"></div>
-        <div class="ngx-dmd-content-border ngx-dmd-s-resize"></div>
-        <div class="ngx-dmd-content-border ngx-dmd-ne-resize"></div>
-        <div class="ngx-dmd-content-border ngx-dmd-nw-resize"></div>
-        <div class="ngx-dmd-content-border ngx-dmd-se-resize"></div>
-        <div class="ngx-dmd-content-border ngx-dmd-sw-resize"></div>
     </div>
     <div *ngIf="footerTpl" class="ngx-dmd-footer"
         [style.min-width.px]="maximizedClass || overlayConfig?.position == 'fill' ? null : config?.contentMinWidth"
         [style.max-width.px]="maximizedClass || overlayConfig?.position == 'fill' ? getMaxWidth() : config?.contentMaxWidth">
         <ng-container [ngTemplateOutlet]="footerTpl"></ng-container>
     </div>
+    <div class="ngx-dmd-border-t"></div>
+    <div class="ngx-dmd-border-r"></div>
+    <div class="ngx-dmd-border-b"></div>
+    <div class="ngx-dmd-border-l"></div>
+    <div class="ngx-dmd-border-tl"></div>
+    <div class="ngx-dmd-border-tr"></div>
+    <div class="ngx-dmd-border-br"></div>
+    <div class="ngx-dmd-border-bl"></div>
 </div>

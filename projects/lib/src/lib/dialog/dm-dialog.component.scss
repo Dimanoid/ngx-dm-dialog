@@ -1,16 +1,6 @@
 @import '../variables';
 @import '../icons';
 
-$borders:
-    1 0 0 0 1 0 "n-resize",
-    0 1 0 0 0 1 "e-resize",
-    0 0 1 0 1 0 "s-resize",
-    0 0 0 1 0 1 "w-resize",
-    1 0 0 1 1 1 "nw-resize",
-    1 1 0 0 1 1 "ne-resize",
-    0 1 1 0 1 1 "se-resize",
-    0 0 1 1 1 1 "sw-resize";
-
 .ngx-dmd-container {
     display: flex;
     flex: 1;
@@ -69,12 +59,6 @@ $borders:
                     justify-content: center;
                     &:hover {
                         background-color: lighten($primaryColor, 15%);
-                        & > i {
-                            margin: -1px 0 1px 0;
-                        }
-                    }
-                    &:active > i {
-                        margin: 1px 0 -1px 0;
                     }
                 }
                 .ngx-dmd-header-button {
@@ -97,63 +81,11 @@ $borders:
             padding: 5px;
             overflow: auto;
             user-select: text;
-            position: relative;
             &.ngx-dmd-content-fill {
                 display: flex;
                 flex: 1;
                 flex-basis: 1e-9px;
                 flex-direction: column;
-            }
-            .ngx-dmd-content-border {
-                position: absolute;
-                .ngx-dmd-n-resize {
-                    top: 0;
-                    height: 2px;
-                    cursor: n-resize;
-                }
-                .ngx-dmd-w-resize {
-                    left: 0;
-                    width: 2px;
-                    cursor: w-resize;
-                }
-                .ngx-dmd-e-resize {
-                    right: 0;
-                    width: 2px;
-                    cursor: e-resize;
-                }
-                .ngx-dmd-s-resize {
-                    bottom: 0;
-                    height: 2px;
-                    cursor: s-resize;
-                }
-                .ngx-dmd-ne-resize {
-                    top: 0;
-                    right: 0;
-                    width: 2px;
-                    height: 2px;
-                    cursor: ne-resize;
-                }
-                .ngx-dmd-nw-resize {
-                    top: 0;
-                    left: 0;
-                    width: 2px;
-                    height: 2px;
-                    cursor: nw-resize;
-                }
-                .ngx-dmd-se-resize {
-                    right: 0;
-                    bottom: 0;
-                    width: 2px;
-                    height: 2px;
-                    cursor: se-resize;
-                }
-                .ngx-dmd-sw-resize {
-                    bottom: 0;
-                    left: 0;
-                    width: 2px;
-                    height: 2px;
-                    cursor: sw-resize;
-                }
             }
         }
         .ngx-dmd-footer {
@@ -163,6 +95,57 @@ $borders:
             margin-top: 2px;
             box-shadow: 0 -1px 1px 0 rgba(0,0,0,.2);
             overflow: hidden;
+        }
+        [class^="ngx-dmd-border-"] {
+            position: absolute;
+            .ngx-dmd-border-t {
+                top: 0;
+                height: 2px;
+                cursor: n-resize;
+            }
+            .ngx-dmd-border-l {
+                left: 0;
+                width: 2px;
+                cursor: w-resize;
+            }
+            .ngx-dmd-border-b {
+                right: 0;
+                width: 2px;
+                cursor: e-resize;
+            }
+            .ngx-dmd-border-r {
+                bottom: 0;
+                height: 2px;
+                cursor: s-resize;
+            }
+            .ngx-dmd-border-tr {
+                top: 0;
+                right: 0;
+                width: 2px;
+                height: 2px;
+                cursor: ne-resize;
+            }
+            .ngx-dmd-border-tl {
+                top: 0;
+                left: 0;
+                width: 2px;
+                height: 2px;
+                cursor: nw-resize;
+            }
+            .ngx-dmd-border-br {
+                right: 0;
+                bottom: 0;
+                width: 2px;
+                height: 2px;
+                cursor: se-resize;
+            }
+            .ngx-dmd-border-bl {
+                bottom: 0;
+                left: 0;
+                width: 2px;
+                height: 2px;
+                cursor: sw-resize;
+            }
         }
     }
 }
