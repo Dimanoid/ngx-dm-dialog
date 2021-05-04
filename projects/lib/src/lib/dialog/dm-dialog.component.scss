@@ -106,17 +106,54 @@ $borders:
             }
             .ngx-dmd-content-border {
                 position: absolute;
-                @each $t, $r, $b, $l, $w, $h, $c in $borders {
-                    .ngx-dmd-#{$c} {
-                        @if $t { top: 0; }
-                        @if $r { right: 0; }
-                        @if $b { bottom: 0; }
-                        @if $l { left: 0; }
-                        @if $w { width: 2px; }
-                        @if $h { height: 2px; }
-                        cursor: $c;
-                    }
-                } 
+                .ngx-dmd-n-resize {
+                    top: 0;
+                    height: 2px;
+                    cursor: n-resize;
+                }
+                .ngx-dmd-w-resize {
+                    left: 0;
+                    width: 2px;
+                    cursor: w-resize;
+                }
+                .ngx-dmd-e-resize {
+                    right: 0;
+                    width: 2px;
+                    cursor: e-resize;
+                }
+                .ngx-dmd-s-resize {
+                    bottom: 0;
+                    height: 2px;
+                    cursor: s-resize;
+                }
+                .ngx-dmd-ne-resize {
+                    top: 0;
+                    right: 0;
+                    width: 2px;
+                    height: 2px;
+                    cursor: ne-resize;
+                }
+                .ngx-dmd-nw-resize {
+                    top: 0;
+                    left: 0;
+                    width: 2px;
+                    height: 2px;
+                    cursor: nw-resize;
+                }
+                .ngx-dmd-se-resize {
+                    right: 0;
+                    bottom: 0;
+                    width: 2px;
+                    height: 2px;
+                    cursor: se-resize;
+                }
+                .ngx-dmd-sw-resize {
+                    bottom: 0;
+                    left: 0;
+                    width: 2px;
+                    height: 2px;
+                    cursor: sw-resize;
+                }
             }
         }
         .ngx-dmd-footer {
