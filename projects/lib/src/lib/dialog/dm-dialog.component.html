@@ -34,12 +34,14 @@
         [style.max-width.px]="maximizedClass || overlayConfig?.position == 'fill' ? getMaxWidth() : config?.contentMaxWidth">
         <ng-container [ngTemplateOutlet]="footerTpl"></ng-container>
     </div>
-    <div class="ngx-dmd-border-t"></div>
-    <div class="ngx-dmd-border-r"></div>
-    <div class="ngx-dmd-border-b"></div>
-    <div class="ngx-dmd-border-l"></div>
-    <div class="ngx-dmd-border-tl"></div>
-    <div class="ngx-dmd-border-tr"></div>
-    <div class="ngx-dmd-border-br"></div>
-    <div class="ngx-dmd-border-bl"></div>
+    <ng-template [ngIf]="config?.resizable">
+        <div class="ngx-dmd-border-t" (mousedown)="dragStart($event, { x: 0 , y: 1, w: 0, h: 1 })" (mouseup)="dragEnd($event)"></div>
+        <div class="ngx-dmd-border-r"></div>
+        <div class="ngx-dmd-border-b"></div>
+        <div class="ngx-dmd-border-l"></div>
+        <div class="ngx-dmd-border-tl"></div>
+        <div class="ngx-dmd-border-tr"></div>
+        <div class="ngx-dmd-border-br"></div>
+        <div class="ngx-dmd-border-bl"></div>
+    </ng-template>
 </div>

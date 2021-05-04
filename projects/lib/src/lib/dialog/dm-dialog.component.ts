@@ -1,9 +1,9 @@
 import {
     Component, OnInit, AfterViewInit, ViewEncapsulation,
     Input, Output, EventEmitter, OnChanges, SimpleChanges, AfterContentInit,
-    ContentChild, TemplateRef, HostBinding, HostListener, Renderer2, Inject
+    ContentChild, TemplateRef, HostBinding, HostListener, Renderer2
 } from '@angular/core';
-import { InputBoolean, Point, getHostElement } from '../_utils';
+import { InputBoolean, Point, getHostElement, Rect } from '../_utils';
 
 import { DmDialogService } from '../dm-dialog.service';
 import { DmDialogRef } from '../dm-dialog-ref';
@@ -47,6 +47,7 @@ export class DmDialogComponent implements OnInit, AfterViewInit, OnChanges, Afte
     dragStartPoint: Point;
     dialogDragStartPoint: Point;
     overlayConfig: IDmOverlayConfig;
+    resize?: Rect;
 
     constructor(
         private _renderer: Renderer2,
@@ -73,18 +74,30 @@ export class DmDialogComponent implements OnInit, AfterViewInit, OnChanges, Afte
         this._ds.remove(this.dialogRef.id);
     }
 
-    dragStart(e: MouseEvent) {
-        if (!this.config.draggable || this.dialogRef.config.position == 'fill' || e.buttons != 1 || this.maximizedClass) {
+    dragStart(e: MouseEvent, resize?: Rect) {
+        if (this.dialogRef.config.position == 'fill' || e.buttons != 1 || this.maximizedClass) {
             return;
         }
-        this.dragStartPoint = new Point(e.clientX, e.clientY);
-        const dialog = getHostElement(this.dialogRef.componentRef);
-        this.dialogDragStartPoint = new Point(parseInt(dialog.style.left, 10), parseInt(dialog.style.top, 10));
-        this.dragging = true;
+        if ((resize && this.config.resizable) || this.config.draggable) {
+            this.dragStartPoint = new Point(e.clientX, e.clientY);
+            const dialog = getHostElement(this.dialogRef.componentRef);
+            this.dialogDragStartPoint = new Point(parseInt(dialog.style.left, 10), parseInt(dialog.style.top, 10));
+            if (resize) {
+                this.resize = resize;
+                this.dragging = false;
+            }
+            else {
+                this.dragging = true;
+                this.resize = undefined;
+            }
+        }
     }
 
     @HostListener('document:mouseup', ['$event'])
     dragEnd(e: MouseEvent) {
+        if (this.resize) {
+            this.resize = undefined;
+        }
         if (!this.dragging) {
             return;
         }
@@ -94,16 +107,30 @@ export class DmDialogComponent implements OnInit, AfterViewInit, OnChanges, Afte
 
     @HostListener('document:mousemove', ['$event'])
     dragMove(e: MouseEvent) {
-        if (!this.dragging) {
+        if (!this.dragging && !this.resize) {
             return;
         }
         const dialog = getHostElement(this.dialogRef.componentRef);
         const dbb = dialog.getBoundingClientRect();
         const wbb = this.dialogRef.wrapperElement.getBoundingClientRect();
-        const x = this._checkCoordinate(this.dialogDragStartPoint.x + e.clientX - this.dragStartPoint.x, dbb.width, wbb.width);
-        const y = this._checkCoordinate(this.dialogDragStartPoint.y + e.clientY - this.dragStartPoint.y, dbb.height, wbb.height, true);
-        this._renderer.setStyle(dialog, 'left', `${x}px`);
-        this._renderer.setStyle(dialog, 'top', `${y}px`);
+        if (this.resize) {
+            const r = this.resize;
+            const _x = (this.dialogDragStartPoint.x + e.clientX) * r.x - this.dragStartPoint.x;
+            const _y = (this.dialogDragStartPoint.y + e.clientY) * r.y - this.dragStartPoint.y;
+            const x = this._checkCoordinate(_x, dbb.width, wbb.width);
+            const y = this._checkCoordinate(_y, dbb.height, wbb.height, true);
+            const dx = _x - x;
+            const dy = _y - y;
+            const w = dx * r.w;
+            const h = dy * r.h;
+            console.log(`[dragMove] [x.y]=[${x}.${y}], [w.h]=[${w}.${h}], [dx,dy]=[${dx}.${dy}]`);
+        }
+        else {
+            const x = this._checkCoordinate(this.dialogDragStartPoint.x + e.clientX - this.dragStartPoint.x, dbb.width, wbb.width);
+            const y = this._checkCoordinate(this.dialogDragStartPoint.y + e.clientY - this.dragStartPoint.y, dbb.height, wbb.height, true);
+            this._renderer.setStyle(dialog, 'left', `${x}px`);
+            this._renderer.setStyle(dialog, 'top', `${y}px`);
+        }
     }
 
     private _checkCoordinate(xy: number, d: number, w: number, y = false): number {
