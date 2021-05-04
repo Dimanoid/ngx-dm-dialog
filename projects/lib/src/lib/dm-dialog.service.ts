@@ -168,7 +168,7 @@ export class DmDialogService {
             this._renderer.setStyle(wrapper, 'overflow', 'hidden');
             this._renderer.addClass(wrapper, 'ngx-dm-dialog-wrapper');
             if (cfg.hostClass) {
-                this._renderer.addClass(wrapper, cfg.hostClass);
+                this._addClasses(wrapper, cfg.hostClass);
             }
             this._renderer.appendChild(element, wrapper);
         }
@@ -200,7 +200,7 @@ export class DmDialogService {
             this._renderer.setStyle(backdrop, 'opacity', cfg.animOpen ? 0 : cfg.backdropOpacity);
             this._renderer.addClass(backdrop, 'ngx-dm-dialog-backdrop');
             if (cfg.backdropClass) {
-                this._renderer.addClass(backdrop, cfg.backdropClass);
+                this._addClasses(backdrop, cfg.backdropClass);
             }
             this._renderer.setStyle(backdrop, 'opacity', 0);
             if (cfg.animOpen) {
@@ -212,7 +212,7 @@ export class DmDialogService {
 
         const dialog = getHostElement(dialogRef.componentRef);
         if (cfg.dialogClass) {
-            this._renderer.addClass(dialog, cfg.dialogClass);
+            this._addClasses(dialog, cfg.dialogClass);
         }
 
         let start: Rect;
@@ -372,6 +372,15 @@ export class DmDialogService {
             el = el.offsetParent as HTMLElement;
         }
         return { y: _y, x: _x };
+    }
+
+    private _addClasses(el: Element, cls: string | string[]): void {
+        if (typeof cls === 'string') {
+            cls = cls.split(/\s+/);
+        }
+        for (const c of cls) {
+            this._renderer.addClass(el, c);
+        }
     }
 
 }

@@ -13,9 +13,9 @@ export interface IDmOverlayConfig {
     animClose?: boolean;
     animCloseDuration?: number;
     animCloseFn?: string;
-    hostClass?: string;
-    backdropClass?: string;
-    dialogClass?: string;
+    hostClass?: string | string[];
+    backdropClass?: string | string[];
+    dialogClass?: string | string[];
 }
 
 const CONFIG_FIELDS = [
