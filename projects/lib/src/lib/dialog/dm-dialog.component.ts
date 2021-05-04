@@ -115,15 +115,17 @@ export class DmDialogComponent implements OnInit, AfterViewInit, OnChanges, Afte
         const wbb = this.dialogRef.wrapperElement.getBoundingClientRect();
         if (this.resize) {
             const r = this.resize;
-            const _x = (this.dialogDragStartPoint.x + e.clientX) * r.x - this.dragStartPoint.x;
-            const _y = (this.dialogDragStartPoint.y + e.clientY) * r.y - this.dragStartPoint.y;
+            const mx = e.clientX - this.dragStartPoint.x;
+            const my = e.clientY - this.dragStartPoint.y;
+            const _x = this.dialogDragStartPoint.x + mx * r.x;
+            const _y = this.dialogDragStartPoint.y + my * r.y;
             const x = this._checkCoordinate(_x, dbb.width, wbb.width);
             const y = this._checkCoordinate(_y, dbb.height, wbb.height, true);
             const dx = _x - x;
             const dy = _y - y;
-            const w = dx * r.w;
-            const h = dy * r.h;
-            console.log(`[dragMove] [x.y]=[${x}.${y}], [w.h]=[${w}.${h}], [dx,dy]=[${dx}.${dy}]`);
+            const w = mx * r.w;
+            const h = my * r.h;
+            console.log(`[dragMove] [x*y]=[${x}*${y}], [w*h]=[${w}*${h}], [dx*dy]=[${dx}*${dy}]`);
         }
         else {
             const x = this._checkCoordinate(this.dialogDragStartPoint.x + e.clientX - this.dragStartPoint.x, dbb.width, wbb.width);
