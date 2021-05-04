@@ -35,10 +35,10 @@
         <ng-container [ngTemplateOutlet]="footerTpl"></ng-container>
     </div>
     <ng-template [ngIf]="config?.resizable">
-        <div class="ngx-dmd-border-t" (mousedown)="dragStart($event, { x: 0 , y: 1, w: 0, h: 1 })" (mouseup)="dragEnd($event)"></div>
-        <div class="ngx-dmd-border-r" (mousedown)="dragStart($event, { x: 0 , y: 0, w: 1, h: 0 })" (mouseup)="dragEnd($event)"></div>
-        <div class="ngx-dmd-border-b" (mousedown)="dragStart($event, { x: 0 , y: 0, w: 0, h: 1 })" (mouseup)="dragEnd($event)"></div>
-        <div class="ngx-dmd-border-l" (mousedown)="dragStart($event, { x: 1 , y: 0, w: 1, h: 0 })" (mouseup)="dragEnd($event)"></div>
+        <div class="ngx-dmd-border-t" (mousedown)="dragStart($event, { x: 0 , y: 1, w: 0, h: -1 })" (mouseup)="dragEnd($event)"></div>
+        <div class="ngx-dmd-border-r" (mousedown)="dragStart($event, { x: 0 , y: 0, w: -1, h: 0 })" (mouseup)="dragEnd($event)"></div>
+        <div class="ngx-dmd-border-b" (mousedown)="dragStart($event, { x: 0 , y: 0, w: 0, h: -1 })" (mouseup)="dragEnd($event)"></div>
+        <div class="ngx-dmd-border-l" (mousedown)="dragStart($event, { x: 1 , y: 0, w: -1, h: 0 })" (mouseup)="dragEnd($event)"></div>
         <div class="ngx-dmd-border-tl" (mousedown)="dragStart($event, { x: 1 , y: 1, w: 1, h: 1 })" (mouseup)="dragEnd($event)"></div>
         <div class="ngx-dmd-border-tr" (mousedown)="dragStart($event, { x: 0 , y: 0, w: 1, h: 1 })" (mouseup)="dragEnd($event)"></div>
         <div class="ngx-dmd-border-br" (mousedown)="dragStart($event, { x: 0 , y: 0, w: 1, h: 1 })" (mouseup)="dragEnd($event)"></div>

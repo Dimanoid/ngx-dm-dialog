@@ -81,7 +81,12 @@ export class DmDialogComponent implements OnInit, AfterViewInit, OnChanges, Afte
         if ((resize && this.config.resizable) || this.config.draggable) {
             this.dragStartPoint = new Point(e.clientX, e.clientY);
             const dialog = getHostElement(this.dialogRef.componentRef);
-            this.dialogDragStartPoint = new Point(parseInt(dialog.style.left, 10), parseInt(dialog.style.top, 10));
+            this.dialogDragStartPoint = new Rect(
+                parseInt(dialog.style.left, 10),
+                parseInt(dialog.style.top, 10),
+                parseInt(dialog.style.width, 10),
+                parseInt(dialog.style.height, 10),
+            );
             if (resize) {
                 this.resize = resize;
                 this.dragging = false;
@@ -126,6 +131,10 @@ export class DmDialogComponent implements OnInit, AfterViewInit, OnChanges, Afte
             const w = mx * r.w;
             const h = my * r.h;
             console.log(`[dragMove] [x*y]=[${x}*${y}], [w*h]=[${w}*${h}], [dx*dy]=[${dx}*${dy}]`);
+            this._renderer.setStyle(dialog, 'left', `${x}px`);
+            this._renderer.setStyle(dialog, 'top', `${y}px`);
+            this._renderer.setStyle(dialog, 'width', `${w}px`);
+            this._renderer.setStyle(dialog, 'height', `${h}px`);
         }
         else {
             const x = this._checkCoordinate(this.dialogDragStartPoint.x + e.clientX - this.dragStartPoint.x, dbb.width, wbb.width);
