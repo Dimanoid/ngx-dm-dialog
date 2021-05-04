@@ -45,7 +45,7 @@ export class DmDialogComponent implements OnInit, AfterViewInit, OnChanges, Afte
     @HostBinding('class.ngx-dmd-draggable') draggable: boolean = false;
 
     dragStartPoint: Point;
-    dialogDragStartPoint: Point;
+    dialogDragStartPoint: Rect;
     overlayConfig: IDmOverlayConfig;
     resize?: Rect;
 
@@ -128,8 +128,8 @@ export class DmDialogComponent implements OnInit, AfterViewInit, OnChanges, Afte
             const y = this._checkCoordinate(_y, dbb.height, wbb.height, true);
             const dx = _x - x;
             const dy = _y - y;
-            const w = mx * r.w;
-            const h = my * r.h;
+            const w = mx * r.w + this.dialogDragStartPoint.w;
+            const h = my * r.h + this.dialogDragStartPoint.h;
             console.log(`[dragMove] [x*y]=[${x}*${y}], [w*h]=[${w}*${h}], [dx*dy]=[${dx}*${dy}]`);
             this._renderer.setStyle(dialog, 'left', `${x}px`);
             this._renderer.setStyle(dialog, 'top', `${y}px`);
