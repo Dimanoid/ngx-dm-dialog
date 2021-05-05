@@ -62,20 +62,16 @@ export class DmDialogComponent implements OnInit, AfterViewInit, OnChanges, Afte
     }
 
     ngAfterViewInit() {
-        // [style.min-height.px]="config?.minHeight"
-        // [style.max-height.px]="maximizedClass || overlayConfig?.position == 'fill' ? null : config?.maxHeight"
-        // [style.min-width.px]="config?.minWidth"
-        // [style.max-width.px]="maximizedClass || overlayConfig?.position == 'fill' ? null : config?.maxWidth"
         const dialog = getHostElement(this.dialogRef.componentRef);
-        if (!this.maximizedClass && this.overlayConfig?.position != 'fill') {
-            if (this.config?.maxWidth) {
-                this._renderer.setStyle(dialog, 'max-width', `${this.config?.maxWidth}px`);
+        if (!this.maximizedClass && (!this.overlayConfig || this.overlayConfig.position != 'fill')) {
+            if (this.config.maxWidth) {
+                this._renderer.setStyle(dialog, 'max-width', `${this.config.maxWidth}px`);
             }
-            if (this.config?.maxHeight) {
-                this._renderer.setStyle(dialog, 'max-height', `${this.config?.maxHeight}px`);
+            if (this.config.maxHeight) {
+                this._renderer.setStyle(dialog, 'max-height', `${this.config.maxHeight}px`);
             }
-            this._renderer.setStyle(dialog, 'min-width', `${this.config?.minWidth}px`);
-            this._renderer.setStyle(dialog, 'min-height', `${this.config?.minHeight}px`);
+            this._renderer.setStyle(dialog, 'min-width', `${this.config.minWidth}px`);
+            this._renderer.setStyle(dialog, 'min-height', `${this.config.minHeight}px`);
         }
     }
 
