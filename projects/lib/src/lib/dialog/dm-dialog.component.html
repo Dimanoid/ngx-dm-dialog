@@ -1,9 +1,4 @@
-<div class="ngx-dmd-container-inner"
-    [style.min-height.px]="config?.minHeight"
-    [style.max-height.px]="maximizedClass || overlayConfig?.position == 'fill' ? null : config?.maxHeight"
-    [style.min-width.px]="config?.minWidth"
-    [style.max-width.px]="maximizedClass || overlayConfig?.position == 'fill' ? null : config?.maxWidth"
-    #dci>
+<div class="ngx-dmd-container-inner" #dci>
     <div class="ngx-dmd-header"
         (mousedown)="dragStart($event)"
         (mouseup)="dragEnd($event)">
@@ -39,6 +34,6 @@
         <div class="ngx-dmd-border-tl" (mousedown)="dragStart($event, { x: 1 , y: 1, w: -1, h: -1 })" (mouseup)="dragEnd($event)"></div>
         <div class="ngx-dmd-border-tr" (mousedown)="dragStart($event, { x: 0 , y: 1, w: 1, h: -1 })" (mouseup)="dragEnd($event)"></div>
         <div class="ngx-dmd-border-br" (mousedown)="dragStart($event, { x: 0 , y: 0, w: 1, h: 1 })" (mouseup)="dragEnd($event)"></div>
-        <div class="ngx-dmd-border-bl" (mousedown)="dragStart($event, { x: 1 , y: 0, w: 1, h: 1 })" (mouseup)="dragEnd($event)"></div>
+        <div class="ngx-dmd-border-bl" (mousedown)="dragStart($event, { x: 1 , y: 0, w: -1, h: 1 })" (mouseup)="dragEnd($event)"></div>
     </ng-template>
 </div>
