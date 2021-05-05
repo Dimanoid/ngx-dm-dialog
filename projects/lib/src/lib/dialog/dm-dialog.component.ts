@@ -1,6 +1,6 @@
 import {
-    Component, OnInit, AfterViewInit, ViewEncapsulation,
-    Input, Output, EventEmitter, OnChanges, SimpleChanges, AfterContentInit,
+    Component, AfterViewInit, ViewEncapsulation,
+    Input, Output, EventEmitter,
     ContentChild, TemplateRef, HostBinding, HostListener, Renderer2
 } from '@angular/core';
 import { InputBoolean, Point, getHostElement, Rect } from '../_utils';
@@ -17,7 +17,7 @@ import { IDmOverlayConfig } from '../dm-overlay-config';
     styleUrls: ['./dm-dialog.component.scss'],
     encapsulation: ViewEncapsulation.None
 })
-export class DmDialogComponent implements OnInit, AfterViewInit, OnChanges, AfterContentInit {
+export class DmDialogComponent implements AfterViewInit {
     @Input() titleText: string;
     private _config: IDmDialogConfig = new DmDialogConfig();
     @Input()
@@ -58,9 +58,6 @@ export class DmDialogComponent implements OnInit, AfterViewInit, OnChanges, Afte
         this.overlayConfig = this.dialogRef.config;
     }
 
-    ngOnInit() {
-    }
-
     ngAfterViewInit() {
         const dialog = getHostElement(this.dialogRef.componentRef);
         if (!this.maximizedClass && (!this.overlayConfig || this.overlayConfig.position != 'fill')) {
@@ -73,12 +70,6 @@ export class DmDialogComponent implements OnInit, AfterViewInit, OnChanges, Afte
             this._renderer.setStyle(dialog, 'min-width', `${this.config.minWidth}px`);
             this._renderer.setStyle(dialog, 'min-height', `${this.config.minHeight}px`);
         }
-    }
-
-    ngAfterContentInit() {
-    }
-
-    ngOnChanges(changes: SimpleChanges): void {
     }
 
     closeDialog() {
@@ -180,12 +171,6 @@ export class DmDialogComponent implements OnInit, AfterViewInit, OnChanges, Afte
         this.maximized = !this.maximizedClass;
         this.maximizedChange.emit(this.maximizedClass);
         this.draggable = this.maximizedClass ? false : this.config.draggable && this.dialogRef.config.position != 'fill';
-    }
-
-    getMaxWidth() {
-        return this.maximizedClass
-            ? document.body.clientWidth
-            : this.dialogRef.wrapperElement.getBoundingClientRect().width - this.dialogRef.config.positionPadding * 2;
     }
 
 }
