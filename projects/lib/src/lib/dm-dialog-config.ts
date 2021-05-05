@@ -4,15 +4,15 @@ export interface IDmDialogConfig {
     showCloseButton?: boolean;
     showMaximizeButton?: boolean;
     keepInBoundaries?: boolean;
-    contentMinWidth?: number;
-    contentMaxWidth?: number;
-    contentMinHeight?: number;
-    contentMaxHeight?: number;
+    minWidth?: number;
+    maxWidth?: number;
+    minHeight?: number;
+    maxHeight?: number;
 }
 
 const CONFIG_FIELDS = [
     'draggable', 'resizable', 'showCloseButton', 'showMaximizeButton', 'keepInBoundaries',
-    'contentMinWidth', 'contentMaxWidth', 'contentMinHeight', 'contentMaxHeight'
+    'mMinWidth', 'maxWidth', 'minHeight', 'maxHeight'
 ];
 
 export class DmDialogConfig implements IDmDialogConfig {
@@ -21,10 +21,10 @@ export class DmDialogConfig implements IDmDialogConfig {
     showCloseButton: boolean = true;
     showMaximizeButton: boolean = false;
     keepInBoundaries: boolean = false;
-    contentMinWidth: number;
-    contentMaxWidth: number;
-    contentMinHeight: number;
-    contentMaxHeight: number;
+    minWidth: number = 250;
+    maxWidth: number;
+    minHeight: number = 200;
+    maxHeight: number;
 
     constructor(json?: IDmDialogConfig) {
         this.apply(json);

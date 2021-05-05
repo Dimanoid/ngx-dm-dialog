@@ -1,7 +1,8 @@
-<div class="ngx-dmd-container-inner" #dci>
+<div class="ngx-dmd-container-inner"
+    [style.min-width.px]="maximizedClass || overlayConfig?.position == 'fill' ? null : config?.minWidth"
+    [style.max-width.px]="maximizedClass || overlayConfig?.position == 'fill' ? getMaxWidth() : config?.maxWidth"
+    #dci>
     <div class="ngx-dmd-header"
-        [style.min-width.px]="maximizedClass || overlayConfig?.position == 'fill' ? null : config?.contentMinWidth"
-        [style.max-width.px]="maximizedClass || overlayConfig?.position == 'fill' ? getMaxWidth() : config?.contentMaxWidth"
         (mousedown)="dragStart($event)"
         (mouseup)="dragEnd($event)">
         <ng-container *ngIf="headerTpl" [ngTemplateOutlet]="headerTpl"></ng-container>
@@ -22,16 +23,10 @@
         </div>
     </div>
     <div class="ngx-dmd-content"
-        [class.ngx-dmd-content-fill]="maximizedClass || overlayConfig?.position == 'fill'"
-        [style.min-width.px]="maximizedClass || overlayConfig?.position == 'fill' ? null : config?.contentMinWidth"
-        [style.max-width.px]="maximizedClass || overlayConfig?.position == 'fill' ? getMaxWidth() : config?.contentMaxWidth"
-        [style.min-height.px]="maximizedClass || overlayConfig?.position == 'fill' ? null : config?.contentMinHeight"
-        [style.max-height.px]="maximizedClass || overlayConfig?.position == 'fill' ? null : config?.contentMaxHeight">
+        [class.ngx-dmd-content-fill]="maximizedClass || overlayConfig?.position == 'fill'">
         <ng-container *ngIf="contentTpl" [ngTemplateOutlet]="contentTpl"></ng-container>
     </div>
-    <div *ngIf="footerTpl" class="ngx-dmd-footer"
-        [style.min-width.px]="maximizedClass || overlayConfig?.position == 'fill' ? null : config?.contentMinWidth"
-        [style.max-width.px]="maximizedClass || overlayConfig?.position == 'fill' ? getMaxWidth() : config?.contentMaxWidth">
+    <div *ngIf="footerTpl" class="ngx-dmd-footer">
         <ng-container [ngTemplateOutlet]="footerTpl"></ng-container>
     </div>
     <ng-template [ngIf]="config?.resizable">
@@ -40,8 +35,8 @@
         <div class="ngx-dmd-border-b" (mousedown)="dragStart($event, { x: 0 , y: 0, w: 0, h: 1 })" (mouseup)="dragEnd($event)"></div>
         <div class="ngx-dmd-border-l" (mousedown)="dragStart($event, { x: 1 , y: 0, w: -1, h: 0 })" (mouseup)="dragEnd($event)"></div>
         <div class="ngx-dmd-border-tl" (mousedown)="dragStart($event, { x: 1 , y: 1, w: -1, h: -1 })" (mouseup)="dragEnd($event)"></div>
-        <div class="ngx-dmd-border-tr" (mousedown)="dragStart($event, { x: 0 , y: 0, w: 1, h: -1 })" (mouseup)="dragEnd($event)"></div>
+        <div class="ngx-dmd-border-tr" (mousedown)="dragStart($event, { x: 0 , y: 1, w: 1, h: -1 })" (mouseup)="dragEnd($event)"></div>
         <div class="ngx-dmd-border-br" (mousedown)="dragStart($event, { x: 0 , y: 0, w: 1, h: 1 })" (mouseup)="dragEnd($event)"></div>
-        <div class="ngx-dmd-border-bl" (mousedown)="dragStart($event, { x: 1 , y: 0, w: 0, h: 1 })" (mouseup)="dragEnd($event)"></div>
+        <div class="ngx-dmd-border-bl" (mousedown)="dragStart($event, { x: 1 , y: 0, w: 1, h: 1 })" (mouseup)="dragEnd($event)"></div>
     </ng-template>
 </div>

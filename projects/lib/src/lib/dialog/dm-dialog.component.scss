@@ -31,6 +31,8 @@
         border-top-left-radius: $headerBorderRadius;
         border-top-right-radius: $headerBorderRadius;
         .ngx-dmd-header {
+            display: flex;
+            flex-shrink: 0;
             background-color: $headerBgColor;
             color: $headerTextColor;
             transition: all .5s cubic-bezier(.19,1,.22,1);
@@ -76,6 +78,10 @@
             }
         }
         .ngx-dmd-content {
+            display: flex;
+            flex: 1;
+            flex-shrink: 0;
+            flex-basis: 0px;
             background-color: $contentBgColor;
             color: $contentTextColor;
             padding: 5px;
@@ -89,6 +95,8 @@
             }
         }
         .ngx-dmd-footer {
+            display: flex;
+            flex-shrink: 0;
             background-color: $footerBgColor;
             color: $footerTextColor;
             padding: 5px;
