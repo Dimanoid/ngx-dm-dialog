@@ -1,6 +1,8 @@
 <div class="ngx-dmd-container-inner"
-    [style.min-width.px]="maximizedClass || overlayConfig?.position == 'fill' ? null : config?.minWidth"
-    [style.max-width.px]="maximizedClass || overlayConfig?.position == 'fill' ? getMaxWidth() : config?.maxWidth"
+    [style.min-height.px]="config?.minHeight"
+    [style.max-height.px]="maximizedClass || overlayConfig?.position == 'fill' ? null : config?.maxHeight"
+    [style.min-width.px]="config?.minWidth"
+    [style.max-width.px]="maximizedClass || overlayConfig?.position == 'fill' ? null : config?.maxWidth"
     #dci>
     <div class="ngx-dmd-header"
         (mousedown)="dragStart($event)"
