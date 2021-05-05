@@ -1,6 +1,6 @@
 {
     "name": "@dimanoid/ngx-dm-dialog",
-    "version": "0.2.13",
+    "version": "0.2.14",
     "peerDependencies": {
         "@angular/common": "^11.2.12",
         "@angular/core": "^11.2.12",
