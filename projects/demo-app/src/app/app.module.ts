@@ -7,16 +7,14 @@ import { NgModule } from '@angular/core';
 import { registerLocaleData } from '@angular/common';
 import en from '@angular/common/locales/en';
 registerLocaleData(en);
-import {
-    NZ_I18N, en_US,
-    NzSwitchModule,
-    NzSelectModule,
-    NzToolTipModule,
-    NzCheckboxModule,
-    NzButtonModule,
-    NzInputModule,
-    NzInputNumberModule
-} from 'ng-zorro-antd';
+import { NZ_I18N, en_US } from 'ng-zorro-antd/i18n';
+import { NzSwitchModule } from 'ng-zorro-antd/switch';
+import { NzSelectModule } from 'ng-zorro-antd/select';
+import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
+import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
 
 import { DmDividerModule } from './dm-divider.module';
 import { DmDialogModule } from '@dimanoid/ngx-dm-dialog';
