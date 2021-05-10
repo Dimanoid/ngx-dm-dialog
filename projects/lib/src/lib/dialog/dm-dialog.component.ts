@@ -133,7 +133,6 @@ export class DmDialogComponent implements AfterViewInit {
             const dy = _y - y;
             const w = mx * r.w + this.dialogDragStartPoint.w;
             const h = my * r.h + this.dialogDragStartPoint.h;
-            console.log(`[dragMove] [x*y]=[${x}*${y}], [w*h]=[${w}*${h}], [dx*dy]=[${dx}*${dy}]`);
             this._renderer.setStyle(dialog, 'left', `${x}px`);
             this._renderer.setStyle(dialog, 'top', `${y}px`);
             this._renderer.setStyle(dialog, 'width', `${w}px`);
