@@ -3,7 +3,7 @@ import {
     Input, Output, EventEmitter,
     ContentChild, TemplateRef, HostBinding, HostListener, Renderer2
 } from '@angular/core';
-import { InputBoolean, Point, getHostElement, Rect } from '../_utils';
+import { InputBoolean, Point, getHostElement, Rect, Size } from '../_utils';
 
 import { DmDialogService } from '../dm-dialog.service';
 import { DmDialogRef } from '../dm-dialog-ref';
@@ -39,6 +39,9 @@ export class DmDialogComponent implements AfterViewInit {
     }
     @Output() maximizedChange: EventEmitter<boolean> = new EventEmitter();
 
+    @Input() size?: Size;
+    @Output() sizeChange: EventEmitter<Size> = new EventEmitter();
+
     @HostBinding('class.ngx-dmd-maximized') maximizedClass: boolean;
     @HostBinding('class.ngx-dmd-container') hostContainer: boolean = true;
     @HostBinding('class.ngx-dmd-dragging') dragging: boolean = false;
@@ -69,6 +72,10 @@ export class DmDialogComponent implements AfterViewInit {
             }
             this._renderer.setStyle(dialog, 'min-width', `${this.config.minWidth}px`);
             this._renderer.setStyle(dialog, 'min-height', `${this.config.minHeight}px`);
+            if (this.size) {
+                this._renderer.setStyle(dialog, 'width', `${this.size.w}px`);
+                this._renderer.setStyle(dialog, 'height', `${this.size.h}px`);
+            }
         }
     }
 
@@ -129,14 +136,14 @@ export class DmDialogComponent implements AfterViewInit {
             const _y = this.dialogDragStartPoint.y + my * r.y;
             const x = this._checkCoordinate(_x, dbb.width, wbb.width);
             const y = this._checkCoordinate(_y, dbb.height, wbb.height, true);
-            const dx = _x - x;
-            const dy = _y - y;
             const w = mx * r.w + this.dialogDragStartPoint.w;
             const h = my * r.h + this.dialogDragStartPoint.h;
             this._renderer.setStyle(dialog, 'left', `${x}px`);
             this._renderer.setStyle(dialog, 'top', `${y}px`);
             this._renderer.setStyle(dialog, 'width', `${w}px`);
             this._renderer.setStyle(dialog, 'height', `${h}px`);
+            this.size = new Size(w, h);
+            this.sizeChange.emit(this.size);
         }
         else {
             const x = this._checkCoordinate(this.dialogDragStartPoint.x + e.clientX - this.dragStartPoint.x, dbb.width, wbb.width);
